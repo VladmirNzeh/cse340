@@ -1,0 +1,29 @@
+/* Media query for small screens */
+@media (max-width: 600px) {
+    .flybox{
+        margin-left: 50px ;
+        
+      }
+
+      .content-details{
+        display: flex;
+        flex-direction: column; 
+        align-content: center;
+        padding: 0px;
+        justify-content: center;
+      }
+      .upgrades{
+        order: 2;
+      }
+      .reviews {
+        order: 1;
+      }
+
+      .vehicle-detail-container {
+        flex-direction: column;
+    }
+
+    .vehicle-image, .vehicle-info {
+        max-width: 100%;
+    }
+}
