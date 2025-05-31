@@ -1,29 +1,38 @@
 /* Media query for small screens */
 @media (max-width: 600px) {
-    .flybox{
-        margin-left: 50px ;
-        
-      }
+  .flybox {
+    margin-left: 50px;
+  }
 
-      .content-details{
-        display: flex;
-        flex-direction: column; 
-        align-content: center;
-        padding: 0px;
-        justify-content: center;
-      }
-      .upgrades{
-        order: 2;
-      }
-      .reviews {
-        order: 1;
-      }
+  .content-details {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    padding: 0;
+    justify-content: center;
+  }
 
-      .vehicle-detail-container {
-        flex-direction: column;
-    }
+  .upgrades {
+    order: 2;
+  }
 
-    .vehicle-image, .vehicle-info {
-        max-width: 100%;
-    }
+  .reviews {
+    order: 1;
+  }
+
+  #vehicle-detail {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #vehicle-detail img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .vehicle-info {
+    width: 100%;
+    margin-left: 0;
+    padding: 10px;
+  }
 }

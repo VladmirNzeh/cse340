@@ -33,12 +33,32 @@ Util.buildClassificationGrid = async function(data){
   return grid
 }
 
+/* **************************************
+* Build the vehicle detail view HTML
+* ************************************ */
+Util.buildVehicleDetail = function(vehicle) {
+  let detail = `
+    <section id="vehicle-detail">
+      <img src="${vehicle.inv_image}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model} on CSE Motors">
+      <div class="vehicle-info">
+        <h2>${vehicle.inv_make} ${vehicle.inv_model}</h2>
+        <p><strong>Price:</strong> $${new Intl.NumberFormat('en-US').format(vehicle.inv_price)}</p>
+        <p><strong>Mileage:</strong> ${new Intl.NumberFormat('en-US').format(vehicle.inv_miles)} miles</p>
+        <p><strong>Year:</strong> ${vehicle.inv_year}</p>
+        <p><strong>Description:</strong> ${vehicle.inv_description}</p>
+        <p><strong>Color:</strong> ${vehicle.inv_color}</p>
+      </div>
+    </section>
+  `
+  return detail
+}
+
 /* ************************************
 * Navigation Builder (Static Example)
 * ********************************** */
 Util.getNav = async function () {
-  return
-  `<ul>
+  return `
+  <ul>
        <li><a href="/inv/type/1">SUV</a><li>
        <li><a href="/inv/type/2">Sedan</a><li>
    </ul>`

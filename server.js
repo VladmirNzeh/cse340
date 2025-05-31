@@ -1,3 +1,4 @@
+ 
 /* ******************************************
  * This server.js file is the primary file of the 
  * application. It is used to control the project.
@@ -27,14 +28,15 @@ app.set("layout", "layouts/layout") // not at views root
  * Routes
  *************************/
 app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from the "public" directory
-// File Not Found Route - must be last route in list
-app.use(async (req, res, next) => {
-  next({status: 404, message: 'Sorry, we appear to have lost that page.'})
-})
+
 // Index route
 app.get("/", utilities.handleErrors(baseController.buildHome))
 app.use("/inv", inventoryRoute)
 
+// File Not Found Route - must be last route in list
+app.use(async (req, res, next) => {
+  next({status: 404, message: 'Sorry, we appear to have lost that page.'})
+})
 /* ***********************
 * Express Error Handler
 * Place after all other middleware
@@ -62,4 +64,3 @@ const host = process.env.HOST || "localhost"
 app.listen(port, () => {
   console.log(`app listening on ${host}:${port}`)
 })
-
