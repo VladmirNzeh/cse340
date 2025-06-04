@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Classification</title>
+</head>
+<body>
+    <div class="form-container">
+    <h1>Add New Classification</h1>
+
+    <% if (messages.error && messages.error.length > 0) { %>
+    <div class="alert alert-danger">
+        <% messages.error.forEach(function(msg) { %>
+            <p><%= msg %></p>
+        <% }); %>
+    </div>
+    <% } %>
+
+    <% if (messages.success && messages.success.length > 0) { %>
+    <div class="alert alert-success">
+        <% messages.success.forEach(function(msg) { %>
+            <p><%= msg %></p>
+        <% }); %>
+    </div>
+    <% } %>
+
+    <form action="/inv/add-classification" method="POST">
+        <label for="classification_name">Classification Name</label>
+        <input type="text" name="classification_name" id="classification_name" required pattern="^[a-zA-Z0-9]+$" title="No spaces or special characters">
+        <button type="submit">Add Classification</button>
+    </form>
+</div>
+</body>
+</html>

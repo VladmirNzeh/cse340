@@ -18,6 +18,22 @@ const utilities = require("./utilities/");
 /* ***********************
  * Middleware
  *************************/
+const session = require("express-session");
+const flash = require("express-flash")
+
+app.use(session({
+  secret:"supersecretkey",
+  resave: false,
+  saveUninitialized: true,
+}));
+
+app.use(flash());
+
+app.use((req, res, next) => {
+  res.locals.messages = req.flash();
+  next();
+});
+
 /* ***********************
  * View Engine and Templates
  *************************/
@@ -51,6 +67,7 @@ app.use(async (err, req, res, next) => {
     nav
   })
 })
+
 /* ***********************
  * Local Server Information
  * Values from .env (environment) file
