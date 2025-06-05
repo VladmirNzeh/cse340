@@ -1,6 +1,6 @@
 const accountModel = require("../models/account-model")
 const utilities = require("../utilities/")
-const bcrypt = require ("bcryptjs")
+const bcrypt = require("bcryptjs")
 
 /* ****************************************
 *  Deliver login view
@@ -102,4 +102,4 @@ async function registerAccount(req, res) {
   }
 }
 
-module.exports = { buildLogin, loginAccount, buildRegister, registerAccount } 
+module.exports = { buildLogin, loginAccount, buildRegister, registerAccount }

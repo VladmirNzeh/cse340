@@ -5,16 +5,16 @@ const Util = {}
  * Centralized Error Handler
  * This function standardizes error handling.
  * ************************************ */
-Util.handleErrors = function (fn) {
-  return function (req, res, next) {
-    fn(req, res, next).catch (error => {
-      next (error);
-   }); // Fo rward errors to the centralized error handler);
-  };
-};
-
-
- 
+/* **************************************
+ * 404 Error Handler
+ * ************************************ */
+Util.handle404 = (req, res, next) => {
+  res.status(404).render("404", {
+      title: "404 - Page Not Found",
+      errorMessage: "The page you are looking for does not exist.",
+      layout: false 
+  })
+}
 
 /* **************************************
 * General Error Handler (500 and other server errors)
