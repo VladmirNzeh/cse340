@@ -19,7 +19,6 @@ const errorController = require("./controllers/errorController");
 const accountRoute = require('./routes/accountRoute');
 const errorRoute = require("./routes/errorRoute");
 const path = require('path')
-const bodyParser = require("body-parser")
 const flash = require('connect-flash')
 
 /* ***********************
@@ -44,8 +43,8 @@ app.use(function(req, res, next){
 })
 
 // Body parser middleware for POST requests
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true })) 
+app.use(express.json())
+app.use(express.urlencoded({ extended: true })) 
 
 /* ***********************
  * View Engine and Templates
