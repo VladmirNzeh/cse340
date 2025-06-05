@@ -20,6 +20,7 @@ Util.handle404 = (req, res, next) => {
 * General Error Handler (500 and other server errors)
 * ************************************ */
 Util.handle500 = (err, req, res, next) => {
+  console.error("Error occurred:", err.stack); // Log the error for debugging
   const errorMessage = err.message || "An unexpected error occurred.";
   res.status(500).render("500", {
       title: "500 - Server Error",
