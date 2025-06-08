@@ -25,6 +25,20 @@ async function getInventoryByClassificationId(classification_id) {
   }
 }
 
+// Get raw inventory data by classification_id
+async function getInventoryByClassification(classification_id) {
+  try {
+    const data = await pool.query(
+      "SELECT * FROM public.inventory WHERE classification_id = $1",
+      [classification_id]
+    )
+    return data.rows
+  } catch (error) {
+    console.error("Error getting inventory by classification:", error.message)
+    throw error
+  }
+}
+
 /* ***************************
  * Get vehicle details by ID
  * *************************** */
@@ -67,7 +81,8 @@ async function addInventoryItem(classification_id, inv_make, inv_model, inv_year
 }
 
 module.exports = {getClassifications, 
-                  getInventoryByClassificationId, 
+                  getInventoryByClassificationId,
+                  getInventoryByClassification, 
                   getVehicleById, 
                   addClassification,
                   addInventoryItem

@@ -33,7 +33,7 @@ Util.handle500 = (err, req, res, next) => {
 * Async Error Wrapper
 * Wrap async functions and pass errors to next()
 * ************************************ */
-Util.catchAsyncErrors = function (fn) {
+Util.handleErrors = function (fn) {
   return function (req, res, next) {
     fn(req, res, next).catch((error) => {
       next(error); // Forward errors to the centralized error handler

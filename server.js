@@ -18,8 +18,9 @@ const inventoryRoute = require("./routes/inventoryRoute");
 const errorController = require("./controllers/errorController");
 const accountRoute = require('./routes/accountRoute');
 const errorRoute = require("./routes/errorRoute");
-const path = require('path')
-const flash = require('connect-flash')
+const flash = require('connect-flash');
+const cookieParser = require('cookie-parser');
+const path = require("path");
 
 /* ***********************
  * Middleware
@@ -42,7 +43,8 @@ app.use(function(req, res, next){
   next();
 })
 
-// Body parser middleware for POST requests
+app.use(cookieParser())
+// express parser middleware for POST requests
 app.use(express.json())
 app.use(express.urlencoded({ extended: true })) 
 

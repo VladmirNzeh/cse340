@@ -1,13 +1,12 @@
 const invModel = require("../models/inventory-model")
-const utilities = require("../utilities/")
-const Util = require("../utilities");
+const utilities = require("../utilities")
 
-const invCont = {}
+const invController = {}
 
 /* ***************************
  *  Build inventory by classification view
  * ************************** */
-invCont.buildByClassificationId = async function (req, res, next) {
+invController.buildByClassificationId = async function (req, res, next) {
   try{
   const classification_id = req.params.classificationId
   const data = await invModel.getInventoryByClassificationId(classification_id)
@@ -34,7 +33,7 @@ invCont.buildByClassificationId = async function (req, res, next) {
 /* ***************************
  *  Deliver specific vehicle detail view
  * ************************** */
-invCont.getVehicleDetail = Util.catchAsyncErrors(async function (req, res, next) {
+invController.getVehicleDetail = utilities.handleErrors(async function (req, res, next) {
   const inventoryId = req.params.inventoryId;
   const vehicleData = await invModel.getVehicleById(inventoryId);
 
@@ -44,7 +43,7 @@ invCont.getVehicleDetail = Util.catchAsyncErrors(async function (req, res, next)
       throw error;
   }
 
-  const vehicleDetailHtml = Util.formatVehicleDetailHtml(vehicleData); // Format vehicle detail using utility
+  const vehicleDetailHtml = utilities.formatVehicleDetailHtml(vehicleData); // Format vehicle detail using utility
   let nav = await utilities.getNav(); // Get navigation
   res.render("./inventory/vehicleDetail", {
       title: `${vehicleData.inv_make} ${vehicleData.inv_model}`,
@@ -54,13 +53,15 @@ invCont.getVehicleDetail = Util.catchAsyncErrors(async function (req, res, next)
 });
 
 // Build the inventory management view
-invCont.buildManagementView = async function(req, res, next) {
+invController.buildManagementView = async function(req, res, next) {
   try {
     let nav = await utilities.getNav()
+    const classificationSelect = await utilities.buildClassificationList()
     res.render("inventory/management", {
       title: "Inventory Management",
       nav,
       messages: req.flash(),
+      classificationSelect,
     });
   } catch (error) {
     next(error)
@@ -68,7 +69,7 @@ invCont.buildManagementView = async function(req, res, next) {
 }
 
 // Serve the add classification form
-invCont.buildAddClassificationView = async function(req, res, next) {
+invController.buildAddClassificationView = async function(req, res, next) {
   let nav = await utilities.getNav();
   res.render("inventory/add-classification", {
     title: "Add New Classification",
@@ -78,7 +79,7 @@ invCont.buildAddClassificationView = async function(req, res, next) {
 };
 
 // Process the classification form submission
-invCont.addClassification = async function(req, res, next) {
+invController.addClassification = async function(req, res, next) {
   const { classification_name } = req.body;
 
   // Server-side validation
@@ -102,7 +103,7 @@ invCont.addClassification = async function(req, res, next) {
 }
 
 // Build the add inventory form
-invCont.buildAddInventoryView = async function(req, res, next) {
+invController.buildAddInventoryView = async function(req, res, next) {
   
   try{
     let nav = await utilities.getNav();
@@ -120,7 +121,7 @@ invCont.buildAddInventoryView = async function(req, res, next) {
 }
 
 // Process the inventory form submission
-invCont.addInventory = async function(req, res, next) {
+invController.addInventory = async function(req, res, next) {
 
   const { classification_id, inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color } = req.body;
   let nav = await utilities.getNav()
@@ -169,4 +170,19 @@ invCont.addInventory = async function(req, res, next) {
     next(error)
   }
 }
-module.exports = invCont
+
+// Return inventory by classification as JSON
+invController.getInventoryJSON = async function (req, res, next) {
+  try {
+    const classification_id = parseInt(req.params.classification_id);
+    const invData = await invModel.getInventoryByClassification(classification_id);
+    if (invData && invData.length > 0) {
+      return res.json(invData);
+    } else {
+      next(new Error("No data returned"));
+    }
+  } catch (error) {
+    next(error);
+  }
+}
+module.exports = invController

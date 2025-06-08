@@ -24,7 +24,7 @@ router.post(
     "/login",
     regValidate.loginRules(),   // Apply login validation rules
     regValidate.checkLoginData, // Check for validation errors
-    accountController.loginAccount     // Process the login attempt
+    utilities.handleErrors(accountController.loginAccount)    // Process the login attempt
   )
   
 // Error handler middleware
