@@ -23,32 +23,51 @@ async function buildLogin(req, res, next) {
 /* ****************************************
 *  Process Login
 * *************************************** */
-async function loginAccount(req, res) {
-  try{
-  let nav = await utilities.getNav()
-  const { account_email, account_password } = req.body
- 
-  const loginResult = await accountModel.loginAccount(account_email, account_password)
+async function loginAccount(req, res, next) {
+  try {
+    const nav = await utilities.getNav();
+    const {account_email, account_password} = req.body;
 
-  // If no account found or password incorrect
-  if (!loginResult) {
-    req.flash('invalid', 'Invalid login credentials.');
-    return res.render("account/login", {
-      title: "Login",
-      nav,
-      messages: req.flash(),
-      account_email,  // Keep email in form
+    const loginResult = await accountModel.loginAccount(account_email, account_password);
+    
+    if (!loginResult) {
+      req.flash("invalid", "invalid login credentials.");
+      return res.render("account/login", {
+        title: "Login",
+        nav,
+        messages: req.flash(),
+        account_email,
+      });
+    }
+    // Create JWT token
+    const token = jwt.sign(
+      {
+        account_id: loginResult.account_id,
+        account_firstname: loginResult.account_firstname,
+        account_lastname: loginResult.account_lastname,
+        account_email: loginResult.account_email,
+        account_type: loginResult.account_type,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+    // Set cookie
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      maxAge: 3600000,
     });
+    req.flash("loggedin", "Welcome back!");
+    res.redirect("/");
+  } catch (error) {
+    next(error);
   }
-  
-  // Save account info in session on successful login
-  req.session.account = loginResult;
-  req.flash('loggedin', 'Welcome back!');
-  res.redirect('/');
-  }
-  catch (error) {
-  next(error); // Forward to error handler
 }
+
+// Logout Account
+function logoutAccount(req, res) {
+  res.clearCookie("jwt");
+  req.flash("notice", "You have been logged out.");
+  res.redirect("/");
 }
 
 /* ****************************************
@@ -104,4 +123,69 @@ async function registerAccount(req, res) {
   }
 }
 
-module.exports = { buildLogin, loginAccount, buildRegister, registerAccount }
+async function buildUpdateAccount(req, res, next) {
+  try {
+    const nav = await utilities.getNav();
+    const accountId = req.params.account_id;
+    const accountData = await accountModel.getaccountById(accountId);
+
+    res.render("account/update-account", {
+      title: "Update Account",
+      nav,
+      account: accountData,
+      messages: req.flash(),
+    });
+  } catch (error) {
+    next (error);
+  }
+}
+
+// Update info update (name + email)
+async function updateAccountInfo(req, res, next) {
+  try {
+    const { account_id, account_firstname, account_lastname, account_email} = req.body;
+
+    const updateResult = await accountModel.updateAccount(account_id, account_firstname, account_lastname, account_email)
+
+    if (updateResult) {
+      req.flash("notice", "Account information updated successfully.")
+      res.redirect("/account/")
+    } else {
+      req.flash("notice", "Update failed.")
+      res.redirect(`/account/update/${account_id}`)
+    }
+  } catch (error) {
+    next (error)
+  }
+}
+
+// Handle password update
+async function updatePassword(req, res, next) {
+  try {
+    const { account_id, account_password} = req.body;
+
+    const hashedPassword = await bcrypt.hash(account_password, 10)
+    const result = await accountModel.updatePassword(account_id, hashedPassword)
+
+    if (result) {
+      req.flash("notice", "Password updated successfully.")
+      res.redirect("/account/")
+    } else {
+      req.flash("notice", "Password update failed.")
+      res.redirect(`/account/update/${aaccount_id}`)
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+    
+module.exports = { 
+  buildLogin, 
+  loginAccount, 
+  buildRegister, 
+  registerAccount, 
+  logoutAccount,
+  buildUpdateAccount, 
+  updateAccountInfo,
+  updatePassword,
+}

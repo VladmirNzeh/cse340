@@ -1,0 +1,21 @@
+<% layout('layouts/layout') %>
+
+<h1>Delete <%= item.inv_make %> <%= item.inv_model %></h1>
+<p class="warning">Confirm Deletion - This action is permanent.</p>
+
+<form action="/inv/delete" method="post">
+  <label>Make</label>
+  <input type="text" name="inv_make" value="<%= item.inv_make %>" readonly>
+
+  <label>Model</label>
+  <input type="text" name="inv_model" value="<%= item.inv_model %>" readonly>
+
+  <label>Year</label>
+  <input type="text" name="inv_year" value="<%= item.inv_year %>" readonly>
+
+  <label>Price</label>
+  <input type="text" name="inv_price" value="<%= item.inv_price %>" readonly>
+
+  <input type="hidden" name="inv_id" value="<%= item.inv_id %>">
+  <input type="submit" value="Delete" class="btn-danger">
+</form>

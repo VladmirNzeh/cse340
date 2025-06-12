@@ -21,6 +21,7 @@ const errorRoute = require("./routes/errorRoute");
 const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 const path = require("path");
+const checkAuth = require("./middleware/checkAuth");
 
 /* ***********************
  * Middleware
@@ -48,6 +49,8 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true })) 
 
+// JWT info to res.locals.accountData
+app.use(checkAuth)
 /* ***********************
  * View Engine and Templates
  *************************/
@@ -59,11 +62,11 @@ app.set('views', path.join(__dirname, 'views'))
 /* ***********************
  * Routes
  *************************/
-app.use(static)
+app.use(express.static(path.join(__dirname, "public")))
 app.get("/", baseController.buildHome)
 app.use("/inv", inventoryRoute)
-app.use('/account', accountRoute)
-app.use(errorRoute)
+app.use("/account", accountRoute)
+app.use("/error", errorRoute)
 
 /* ***********************
  * Error Handling

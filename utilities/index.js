@@ -1,6 +1,5 @@
 const invModel = require("../models/inventory-model")
 const Util = {}
-
 /* **************************************
  * Centralized Error Handler
  * This function standardizes error handling.
@@ -147,4 +146,15 @@ Util.buildClassificationList = async function (classification_id = null) {
   classificationList += "</select>"
   return classificationList
 }
+
+// Check if user is logged in  before allowing access
+Util.checkLogin = function(req, res, next) {
+  if (req.session && req.session.loggedin) {
+    next();
+  } else {
+    req.flash("notice, Please log in.");
+    res.redirect("/account/login");
+  }
+};
+
 module.exports = Util

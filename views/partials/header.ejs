@@ -5,21 +5,12 @@
     <div id="tools">
       <!-- <a title="Click to log in" href="/account/login">My Account</a> -->
       <ul>
-        <% if (messages.loggedin && messages.loggedin.length > 0) { %>
-          <li>
-            <div class="alert alert-success">
-              <% messages.loggedin.forEach(function(msg) { %>
-                <p><%= msg %></p>
-              <% }); %>
-            </div>
-          </li>
+        <% if (accountData) { %>
+          <li><a href="/account/">Welcome <%= accountData.account_firstname %></a></li>
           <li><a href="/account/logout">Logout</a></li>
-        <% } else { %>
-          <li><a href="/account/login">Login</a></li>
+              <% } else { %>
+          <li><a href="/account/login">My Account</a></li>
         <% } %>
       </ul>
     </div>
-
-    
-    
 </header>

@@ -3,6 +3,7 @@ const express = require("express")
 const router = new express.Router() 
 const invController = require("../controllers/invController")
 const utilities = require("../utilities/")
+const {checkAccountType} = require("../middleware/checkAuth")
 
 // Route to build inventory by classification view
 router.get("/type/:classificationId", invController.buildByClassificationId);
@@ -26,7 +27,15 @@ router.get("/add-inventory", invController.buildAddInventoryView);
 router.post("/add-inventory", invController.addInventory);
 
 // New Route to work with the JavaScript file created
-router.get("/inv/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON));
 
+//Route for showing delete confirmation
+router.get("/delete/:inv_id", utilities.checkLogin, invController.buildDeleteView);
+
+// Route for handling delete submission
+router.post("/delete/", utilities.checkLogin, invController.deleteInventoryItem);
+
+// Protect all inventory routes with checkAccountType middleware
+router.use(checkAccountType);
  
 module.exports = router;
