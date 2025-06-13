@@ -1,61 +1,56 @@
-<h1>Welcome to CSE Motors!</h1> 
 
-<div class="contentbox">
-    <picture>
-      <img class="main-car" src="images/vehicles/delorean.jpg" alt="Delorean">
-    </picture>
-    <div class="flybox">
-      <h3 class="flybox-title">DMC Delorean</h3>
-      <span>3 Cup holders</span>
-      <span>Superman doors</span>
-      <span>Fuzzy dice!</span>
-      <span>
-        <button>Own Today!</button>
-      </span>
-    </div>
+<div class="homepage">
+    <section class="hero">
+
+        <h2>Welcome to CSE Motors!</h2>
+        <%- messages()%>
+        <img src="images/vehicles/delorean.jpg"     alt="Delorean-Car" loading="lazy">
+        <div class="delorean-desc">
+            <h3>DMC Delorean</h3>
+            <p>3 Cup Holders</p>
+            <p>Superman doors</p>
+            <p>Fuzzy dicel</p>
+            <button>Own Today</button>
+        </div>
+    </section>
+    <section class="reviews">
+        <h2>DMC Delorean Reviews</h2>
+        <ul>
+            <li>"So fast it's almost like traveling in time." (4/5)</li>
+            <li>"Coolest ride on the road." (4/5)</li>
+            <li>"I'm feeling Mcfly!" (5/5)</li>
+            <li>"The most futuristic ride of our day." (4.5/5)</li>
+            <li>"80's livin and love it!" (4/5)</li>
+        </ul>
+    </section>
+    <section class="upgrades">
+        <h2>Delorean Upgrades</h2>
+        <div class="upgrade-grid">
+            <div class="individual-up">
+                <div class="imag">
+                    <img src="images/upgrades/flux-cap.png" alt="flux-capacitor" loading="lazy">
+                </div>
+                <a href="#">Flux Capacitor</a>
+                </div>
+            <div class="individual-up">
+                <div class="imag">
+                    <img src="images/upgrades/flame.jpg"     alt="flame-decals" loading="lazy">
+                </div>
+                <a href="#">Flame Decals</a>
+            </div>
+            <div class="individual-up">
+                <div class="imag">
+                    <img src="images/upgrades/bumper_sticker.jpg"     alt="Bumper-sticker" loading="lazy">
+                </div>
+                <a href="#">Bumper Stickers</a>
+            </div>
+            <div class="individual-up">
+                <div class="imag">
+                    <img src="images/upgrades/hub-cap.jpg"     alt="Hub-caps" loading="lazy">
+                </div>
+                <a href="#">Hub Caps</a>
+            </div>
+        </div>
+
+    </section>
 </div>
-
-<div class="content-details">  
-    <div class="upgrades">
-        <h3>Delorean Upgrades</h3>
-        <div class="upgrade-item">
-            <div class="upgrade-image"><img src="images/upgrades/flux-cap.png" alt="Flux Capacitor"></div>
-            <a href="">Flux Capacitor</a>
-        </div>
-        <div class="upgrade-item">
-            <div class="upgrade-image"><img src="images/upgrades/flame.jpg" alt="Flame Decals"></div>
-            
-            <a href="">Flame Decals</a>
-        </div>
-        <div class="upgrade-item">
-            <div class="upgrade-image"><img src="images/upgrades/bumper_sticker.jpg" alt="Bumper Stickers"></div>
-            
-            <a href="">Bumper Stickers</a>
-        </div>
-        <div class="upgrade-item">
-            <div class="upgrade-image"><img src="images/upgrades/hub-cap.jpg" alt="Hub Caps"></div>
-            
-            <a href="">Hub Caps</a>
-        </div>
-    </div>
-
-    <div class="reviews">
-        <h3>DMC Delorean Reviews</h3>
-        <div class="review-item">
-            <p>"So fast it's almost like traveling in time." (4/5)</p>
-        </div>
-        <div class="review-item">
-            <p>"Coolest ride on the road." (4/5)</p>
-        </div>
-        <div class="review-item">
-            <p>"I'm feeling McFly!" (5/5)</p>
-        </div>
-        <div class="review-item">
-            <p>"The most futuristic ride of our day." (4.5/5)</p>
-        </div>
-        <div class="review-item">
-            <p>"80's livin' and I love it!" (5/5)</p>
-        </div>
-    </div>
-</div>
-

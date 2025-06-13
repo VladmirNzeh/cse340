@@ -1,25 +1,27 @@
-<div class="management-container">
-<h1>Inventory Management</h1>
-
-    <% if (messages.error && messages.error.length > 0) { %>
-    <div class="alert alert-danger">
-        <% messages.error.forEach(function(msg) { %>
-            <p><%= msg %></p>
-        <% }); %>
-    </div>
-    <% } %>
-
-    <% if (messages.success && messages.success.length > 0) { %>
-    <div class="alert alert-success">
-        <% messages.success.forEach(function(msg) { %>
-            <p><%= msg %></p>
-        <% }); %>
-    </div>
-    <% } %>
-
-    <ul>
-        <li><a href="/inv/add-classification">Add New Classification</a></li>
-        <li><a href="/inv/add-inventory">Add New Inventory</a></li>
-        <li><a href="/inv/delete/<%= item.inv_id %>">Delete</a></li>
-    </ul>
+<h1><%= title %></h1>
+<%- messages() %>
+<div class="manage-inventory">
+  <ul>
+    <li><a href="/inv/newClassification">Add New Classification</a></li>
+    <li><a href="/inv/newVehicle">Add New Vehicle</a></li>
+  </ul>
 </div>
+<p>Manage your inventory by adding new classifications or vehicles.</p>
+<p>Use the links above to navigate to the respective pages.</p>
+
+<h2>Manage inventory</h2>
+<p>Choose a classification to see those inventory items.</p>
+
+<%- classifications %>
+<br>
+<table id="inventoryDisplay"></table>
+<br>
+
+<noscript>
+  JavaScript is required to view the inventory management page.
+</noscript>
+<br>
+
+<a class="hero-btn" href="/">Return Home</a>
+
+<script src="/js/inventory.js"></script>

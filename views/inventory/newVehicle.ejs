@@ -1,0 +1,45 @@
+<h1><%= title %></h1>
+<%- messages() %>
+ <p style="margin: 1rem;">All Fields are Required</p>
+<div class="content">
+  <form action="/inv/newVehicle" method="post" id="newVehicleForm">
+    <div class="form-group">
+      <label for="classification_id">Classification:</label>
+      <%- classifications %>
+    <br>
+    <label for="inv_make">Make:</label>
+    <input id="inv_make" type="text" name="inv_make" required placeholder="minimum 3 characters" pattern=".{3,}" value="<%= locals.inv_make %>">
+    <br>
+    <label for="inv_model">Model:</label>
+    <input id="inv_model" type="text" name="inv_model" required placeholder="minimum 3 characters" pattern=".{3,}" value="<%= locals.inv_model %>">
+    <br>
+    <label for="inv_description">Description:</label>
+    <textarea id="inv_description" name="inv_description" required></textarea>
+    <br>
+    <label for="inv_image">Image Path:</label>
+    <input id="inv_image" type="text" name="inv_image" required value="<%= locals.inv_image %>" >
+    <br>    
+    <label for="inv_thumbnail">Thumbnail Path:</label>
+    <input id="inv_thumbnail" type="text" name="inv_thumbnail" required value="<%= locals.inv_thumbnail %>">
+    <br>
+    <label for="inv_price">Price:</label>
+    <input id="inv_price" type="number" name="inv_price" required placeholder="decimal or integer" step="0.01" min="0" value="<%= locals.inv_price %>">
+    <br>
+    <label for="inv_year">Year:</label>
+    <input id="inv_year" type="text" name="inv_year" required placeholder="4-digit year" pattern="\d{4}" value="<%= locals.inv_year %>">
+    <br>
+    <label for="inv_miles">Miles:</label>
+    <input id="inv_miles" type="number" name="inv_miles" min="0" required placeholder="digits only" step="1" value="<%= locals.inv_miles %>">
+    <br>
+    <label for="inv_color">Color:</label>
+    <input id="inv_color" type="text" name="inv_color" required value="<%= locals.inv_color %>">
+    </div>
+    <br>
+    <button class="hero-btn" type="submit">Add Vehicle</button>
+  </form>
+  <br>
+  <div style="margin-top: 1rem">
+    <a href="/account/register">Return Home</a>
+  </div>
+</div>
+

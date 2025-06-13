@@ -1,52 +1,50 @@
-// Needed Resources 
-const express = require("express")
-const router = new express.Router() 
+/***************************
+ * Account routes
+ * Deliver login view account
+ *****************************/
 const utilities = require("../utilities/")
-const accountController = require("../controllers/accountController.js")
-const regValidate = require('../utilities/account-validation')
-const { checkAuth, checkAccountType } = require('../middleware/checkAuth')
-// GET route for login view
-router.get('/login', accountController.buildLogin); 
+const express = require("express")
+const router = new express.Router()
+const accountController = require("../controllers/accountController")
+const regValidate = require("../utilities/account-validation")
 
-// GET route for logout view
-router.get("/logout", accountController.logoutAccount)
 
-// GET route for registration view
-router.get('/register', accountController.buildRegister); 
 
-// 
-router.get("/update/:account_id", checkAuth, accountController.buildUpdateAccount);
-// Process the registration data
-router.post(
-    "/register",
+/***************************
+ * Deliver registration View
+ * Deliver registration view account
+ *****************************/
+router.get("/login",  utilities.handleErrors(accountController.buildLogin))
+
+router.get("/register", utilities.handleErrors(accountController.buildRegister))
+
+
+
+/***************************
+ * Deliver Account Management View
+ * Unit 5, JWT authorization activity
+ *****************************/
+router.get("/",
+    utilities.checkLogin, //To check if the client is authorized, if not the access for this view is forbidden.    
+    utilities.handleErrors(accountController.buildAccountManagement)
+
+)
+
+
+/***************************
+ * Process registration
+ * Process registration activity
+ *****************************/
+router.post("/register",
     regValidate.registrationRules(),
     regValidate.checkRegData,
-    accountController.registerAccount
-  )
+    utilities.handleErrors(accountController.registerAccount) )
 
-  // Process the login attempt
-router.post(
-    "/login",
-    regValidate.loginRules(),   // Apply login validation rules
-    regValidate.checkLoginData, // Check for validation errors
-    utilities.handleErrors(accountController.loginAccount)    // Process the login attempt
-  )
-  
-// Update account info (first name, last name, email)
-router.post(
-  "/update-account",
-  checkAuth, regValidate.updateAccountRules(), regValidate.checkUpdateData, accountController.updateAccountInfo);
+// Process the login attempt
+router.post( "/login",
+    regValidate.loginRules(),
+    regValidate.checkLogData, 
+    utilities.handleErrors(accountController.accountLogin)
+)
 
-// Update password
-router.post(
-  "/update-password",
-  checkAuth, regValidate.passwordRules(), regValidate.checkPasswordUpdate, accountController.updatePassword);
-
-// Error handler middleware
-router.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).render('error', { error: err });
-});
-
-// Export the router
 module.exports = router;

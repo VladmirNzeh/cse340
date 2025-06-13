@@ -1,41 +1,72 @@
-// Needed Resources 
-const express = require("express")
-const router = new express.Router() 
-const invController = require("../controllers/invController")
-const utilities = require("../utilities/")
-const {checkAccountType} = require("../middleware/checkAuth")
+const utilities = require("../utilities")
+// Needed Resources
+const express = require("express") // brings Express into the scope of the file.
+const router = new express.Router() // uses Express to create a new Router object. Remember in lesson 2 that using separate router files for specific elements of the application would keep the server.js file smaller and more manageable? That's what we're doing.
+const invController = require("../controllers/invController") // brings the inventory controller into this router document's scope to be used. 
+
+const addValidate = require("../utilities/add-validation")
 
 // Route to build inventory by classification view
-router.get("/type/:classificationId", invController.buildByClassificationId);
+router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId));
+// Route to build inventory by item id view
+router.get("/detail/:inventoryId", utilities.handleErrors(invController.buildByItemId));
 
-// Route to deliver a specific inventory item detail view
-router.get("/detail/:inventoryId", invController.getVehicleDetail)
+// Route to management view
+router.get("/", utilities.handleErrors(invController.buildManagementView));
 
-// Route to deliver the inventory management view
-router.get("/management", invController.buildManagementView);
+// Route to add classification view
 
-// Route to add classification form
-router.get("/add-classification", invController.buildAddClassificationView);
+router.get("/add-classification", utilities.handleErrors(invController.buildAddClassView));
 
-// Process classification form submission
-router.post("/add-classification", invController.addClassification)
+// Route to add inventory view
 
-// Route add inventory form
-router.get("/add-inventory", invController.buildAddInventoryView);
+router.get("/add-inventory", utilities.handleErrors(invController.buildAddInvView));
 
-// Process inventory form submission
-router.post("/add-inventory", invController.addInventory);
+// Process the add classification
 
-// New Route to work with the JavaScript file created
-router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON));
+router.post("/add-classification",
+    addValidate.addClassRules(),
+    addValidate.checkAddClassData,    
+    utilities.handleErrors(invController.addClassification));
 
-//Route for showing delete confirmation
-router.get("/delete/:inv_id", utilities.checkLogin, invController.buildDeleteView);
+// Process the add inventory
+router.post("/add-inventory",
+    addValidate.addInvRules(),
+    addValidate.checkAddInvData,   
+    utilities.handleErrors(invController.addInventory)
+);
 
-// Route for handling delete submission
-router.post("/delete/", utilities.checkLogin, invController.deleteInventoryItem);
+// This route works with the URL in the inventory.js fil in js folder in public
 
-// Protect all inventory routes with checkAccountType middleware
-router.use(checkAccountType);
- 
+router.get("/getInventory/:classification_id",
+    utilities.handleErrors(invController.getInventoryJSON)
+)
+
+// Route to the edit view
+
+router.get("/edit-inventory/:inv_id",
+    utilities.handleErrors(invController.buildEditInventory)
+)
+
+// Process the edit inventory
+
+router.post("/update/",
+    addValidate.addInvRules(),
+    addValidate.checkUpdateData,
+    utilities.handleErrors(invController.updateInventory)
+)
+
+// Route to the delete view
+
+router.get("/delete-confirm/:inv_id",
+    utilities.handleErrors(invController.buildDeleteConfirmationView)
+)
+
+// Process to delete inventory
+
+router.post("/delete/",
+    utilities.handleErrors(invController.deleteConfirmation)
+)
+
 module.exports = router;
+

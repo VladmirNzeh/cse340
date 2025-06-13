@@ -5,23 +5,26 @@
 /* ***********************
  * Require Statements
  *************************/
-const express = require("express");
-const expressLayouts = require("express-ejs-layouts");
-const env = require("dotenv").config();
-const app = express();
-const session = require("express-session");
-const pool = require('./database/');
-const utilities = require('./utilities');
-const static = require("./routes/static");
-const baseController = require("./controllers/baseController");
-const inventoryRoute = require("./routes/inventoryRoute");
-const errorController = require("./controllers/errorController");
-const accountRoute = require('./routes/accountRoute');
-const errorRoute = require("./routes/errorRoute");
-const flash = require('connect-flash');
-const cookieParser = require('cookie-parser');
-const path = require("path");
-const checkAuth = require("./middleware/checkAuth");
+const express = require("express")
+const expressLayouts = require("express-ejs-layouts")
+const env = require("dotenv").config()
+const app = express()
+const static = require("./routes/static")
+const baseController = require("./controllers/baseController")
+const inventoryRoute = require("./routes/inventoryRoute")
+const utilities = require("./utilities/") 
+const accountRoute = require("./routes/accountRoute")
+const session = require("express-session")
+const pool = require('./database/')
+const bodyParser = require("body-parser")
+const cookieParser = require("cookie-parser")
+
+/* ***********************
+ * View Engine and Templates
+ *************************/
+app.set("view engine", "ejs")
+app.use(expressLayouts)
+app.set("layout", "./layouts/layout") // not at views root
 
 /* ***********************
  * Middleware
@@ -32,50 +35,72 @@ app.use(session({
     pool,
   }),
   secret: process.env.SESSION_SECRET,
-  resave: false,
+  resave: true,
   saveUninitialized: true,
   name: 'sessionId',
 }))
 
-//Flash Message Middleware
-app.use(flash())
+// Express Messages Middleware
+app.use(require('connect-flash')())
 app.use(function(req, res, next){
-  res.locals.messages = req.flash(); 
-  next();
+  res.locals.messages = require('express-messages')(req,res)
+  next()
 })
 
-app.use(cookieParser())
-// express parser middleware for POST requests
-app.use(express.json())
-app.use(express.urlencoded({ extended: true })) 
+// Process registration activity
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true})) //for passing application/x-www-form-urlencoded
 
-// JWT info to res.locals.accountData
-app.use(checkAuth)
-/* ***********************
- * View Engine and Templates
- *************************/
-app.set("view engine", "ejs")
-app.use(expressLayouts)
-app.set("layout", "./layouts/layout") 
-app.set('views', path.join(__dirname, 'views'))
+// For allowing the cookie parser to be implemented throughout the project
+app.use(cookieParser())
+
+// Applying the middleware to check the JWT to confirm that it matches the one created
+app.use(utilities.checkJWTToken)
+
 
 /* ***********************
  * Routes
  *************************/
-app.use(express.static(path.join(__dirname, "public")))
-app.get("/", baseController.buildHome)
+app.use(static)
+// Index route
+app.get("/", utilities.handleErrors(baseController.buildHome))
+/*   Previous index route
+app.get("/", function(req, res){
+  res.render("index", {title:"Home"})
+})
+*/
+// Intentional Error Route
+app.get("/error", utilities.handleErrors(baseController.buildError))
+
+// Inventory routes
 app.use("/inv", inventoryRoute)
+
+// Account Route
+
 app.use("/account", accountRoute)
-app.use("/error", errorRoute)
+
+// File Not Found Route - must be last route in list
+app.use(async (req, res, next) => {
+  next({status: 404, message: 'Sorry, we appear to have lost that page.'})
+})
+
 
 /* ***********************
- * Error Handling
+ * Express Error Handler
+ * Place after all other middleware
  *************************/
-// Use the 404 error handler from utilities
-app.use(utilities.handle404);
+app.use(async(err, req, res, next) => {
+  let nav = await utilities.getNav()
+  console.error(`Error at: "${req.originalUrl}": ${err.message}`)
+  if(err.status == 404) {message = err.message} else {message = 'Oh no! There was a crash. Maybe try a different route?'}
+  res.render("errors/error", {
+    title: err.status || 'Server Error',
+    message,
+    nav,
+    intError: "<a href= /error >Error link</a>"
+  })
+})
 
-// Use the 500 error handler for other server errors
-app.use(utilities.handle500);
 
 
 /* ***********************
@@ -91,4 +116,3 @@ const host = process.env.HOST
 app.listen(port, () => {
   console.log(`app listening on ${host}:${port}`)
 })
- 

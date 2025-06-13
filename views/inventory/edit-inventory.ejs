@@ -16,7 +16,7 @@
  </ul>
 <% } %>
 
-<form class="addInvForm" method="POST" action="/inv/add-inventory">
+<form id="updateForm" class="editInvForm" method="POST" action="/inv/update">
     <div><i>All required</i></div>
     <label for="classificationList">Classification:<%- optionsList  %></label>
 
@@ -25,6 +25,8 @@
     <label for="inv_model">Model: <input type="text" name="inv_model" pattern="[a-zA-Z]{3,}" placeholder="Min of 3 character" id="inv_model" required value="<%= locals.inv_model %>"></label>
 
     <label for="inv_description">Description:<textarea name="inv_description" rows="4" cols="50" placeholder="Enter the description..." id="inv_description" required ><%= locals.inv_description %></textarea></label>
+
+    
 
     <label for="inv_image">Image Path:<input type="text" name="inv_image" placeholder="/images/vehicles/imagename.png" id="inv_image" required value="<%= locals.inv_image %>"></label>
 
@@ -38,5 +40,13 @@
 
     <label for="inv_color">Color: <input type="text" name="inv_color" id="inv_color" required value="<%= locals.inv_color %>"></label>
     
-    <input type="submit" value="Add vehicle">    
+    <input type="submit" id="button" value="Edit vehicle" disabled> 
+    
+    <input type="hidden" name="inv_id"
+    <% if(locals.inv_id) {%> value = "<%= locals.inv_id%>"<%} %>> 
+    
+  
 </form>
+
+
+<script src="../../js/inv-update.js" ></script>

@@ -1,618 +1,414 @@
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: white;
+/******* Change Box Model ***************/
+
+:root {
+  --paragraph-font: "Roboto", sans-serif; 
+  --heading-font: "Cantata One", serif;
+  --text-color1: #000;
+  --text-color2: aliceblue;
+  --primary-color: rgb(30, 165, 202);
+  --secondary-color: #2a2929;
+}
+
+
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+a,
+li,
+p {
+  font-family: var(--paragraph-font);
+}
 
-header {
-  padding: 20px 0px;
+h1, h2, h3 {
+  font-family: var(--heading-font);
+}
+
+
+#top-header {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  margin: 1rem 0.5rem;
+  /* justify-content: space-around; */
+  /* border: solid 1px red; */
+  /* width: 100%; */
+}
+
+.siteName a {
+  text-decoration: none;
+  color: #000;
+  font-size: 2rem;
+}
+
+#tools {
+  /* border: solid 1px red; */
   display: flex;
+  justify-content: flex-end;
+}
+
+#tools a {
+  text-decoration: none;
+  color:#000;
+}
+
+nav ul {
+  display: flex;
+  flex-direction: row;
+  /* border: solid 1px red; */
   justify-content: space-between;
-  align-items: center;
-  
-}
-
-header a{
-  text-decoration: none;
-}
-
-.siteName {
-  font-size:40px;
-  padding-left: 20px;
-  font-weight: bold;
-}
-
-#tools{
-  padding-right: 20px;
-}
-#tools ul li{
-  list-style-type: none;
-}
-
-nav ul li a{
-  color: rgb(222, 215, 255);
-  text-decoration: none;
-}
-nav{
- margin-right: 30px;
-}
-nav ul{
   list-style: none;
-  background-color: #555;
-  overflow: auto;
-  float: none;
-  text-align: center;
-  align-content: center;
-  display: flex;
-  width: 100%;
+  padding: 1.2rem 1rem;
+  background-color: #2a2929;
+  color: aliceblue;
 }
 
-nav ul li{
-  padding: 12px 0px;
-  float:none;
-  width: 100%;
-  
+nav ul li a {
+  text-decoration: none;
+  color: aliceblue;
 }
 
-nav ul li:hover{
-  background-color:darkgray;
-}
-
-body h1{
-  margin-left: 10px;
-}
-
-.contentbox {
+.hero {
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 1rem 0.5rem;
+  position: relative;
+}
+
+.delorean-desc {
+  position: absolute;
+  top: 60px;
+  left: 20px;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  color: rgb(30, 165, 202);
+  background: #ffffff8e;  
+}
+
+.delorean-desc button {
+  width: fit-content;
+  padding: 0.5rem;
+  background: rgb(30, 165, 202);
+  border: none;
+  color: #2a2929;
+}
+
+.hero img {
+  padding: 1rem 2rem;
+  align-self: center;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+
+.reviews {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0.5rem;
+}
+
+.reviews ul{
+   display: flex;
+   flex-direction: column;
+   gap: 0.8rem;
+   margin: 0.5rem 1.5rem;
+   /* padding: 1rem 0; */
+   width: 100%;
+   width: fit-content;
+   align-self: center;
+}
+
+.upgrades {
+  /* border: solid 1px red; */
+  padding: 1rem 0.5rem;
+}
+
+.upgrade-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0.5rem;
+  /* border: solid 1px red; */
+  /* justify-items: space-between; */
+}
+
+.individual-up {
+  /* border: solid 1px red; */
+  text-align: center;
+  height: 130px;
+  /* width: 150px; */
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center; */
+}
+
+.individual-up a {
+  /* border: solid red 1px; */
+  margin: 1rem;
+}
+
+.imag {
+  background: rgb(30, 165, 202);
+  height: 100px;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
 
-.flybox{
-  margin-left: 100px ;
-  position: absolute;
-  width: 200px;
-  height: inherit;
-  text-align: justify;
-  background-color: rgba(158, 238, 246, 0.6);
-  color: rgba(0, 109, 192, 0.91);
-  padding: 10px;
-  align-self: flex-start;
-}
-.flybox-title{
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-.flybox span{
-  display: block;
-  margin: 2px 0px;
-}
-.flybox button{
-  background-color: #0095ff;
-  border: 1px solid transparent;
-  border-radius: 3px;
-  box-shadow: rgba(255, 255, 255, .4) 0 1px 0 0 inset;
-  box-sizing: border-box;
-  color: #000;
-  cursor: pointer;
-  display: inline-block;
-  font-family: -apple-system,system-ui,"Segoe UI","Liberation Sans",sans-serif;
-  font-weight: 400;
-  line-height: 1.15385;
-  margin: 2px 0;
-  outline: none;
-  padding: 5px .8em;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  -webkit-user-select: none;
-  user-select: none;
-  touch-action: manipulation;
-  vertical-align: baseline;
-  white-space: nowrap;
+footer {
+  padding: 0.5rem 0.4rem;
 }
 
-.content-details{
-  display: flex;
-  flex-direction: row; 
-  align-content: center;
-  padding: 20px;
-  justify-content: center;
-  
-}
-
-.upgrades, .reviews{
-  padding: 20px;
-  margin: 10px auto;
-  flex: 1; 
-  box-sizing: border-box; 
-}
-
-.upgrades{
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 columns */
-  gap: 10px; /* Space between boxes */
-  padding: 20px;
-  justify-content: space-around; /* Center horizontally */
-  align-items: center; /* Center vertically */
-}
-.upgrades h3{
-  grid-column: span 2;
-}
-
-.upgrade-item {
-  text-align: center;
-  
-  
-}
-
-.upgrade-image{
-   background-color: #0095ff;
-   justify-content: center;
-   align-items: center;
-   height: 100px;
-}
-
-.upgrade-image img{
-  padding: 10px;
-  width: 70px;
-}
-
-main{
-  padding: 0px 20px;
-}
-
-/* Card Layout for Vehicle Inventory */
 #inv-display {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-  padding: 20px 0;
+  /* border: solid 1px orange; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   list-style: none;
- 
+  margin: 1rem 0;
+
 }
 
 #inv-display li {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-#inv-display li:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-#inv-display img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.namePrice {
-  padding: 15px;
-  text-align: center;
-}
-
-.namePrice h2 {
-  font-size: 1.2em;
-  margin: 10px 0;
-  color: #333;
-}
-
-.namePrice span {
-  display: block;
-  font-size: 1.1em;
-  color: #d9534f;
-  margin-top: 5px;
-}
-
-/* Vehicle Detail Section */
-.vehicle-detail {
-  margin-top: 20px;
-  padding: 20px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.vehicle-detail-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.vehicle-image {
-  flex: 1;
-  max-width: 50%;
-}
-
-.vehicle-image img {
-  width: 100%;
-  border-radius: 8px;
-}
-
-.vehicle-info {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  max-width: 50%;
-}
-
-.vehicle-info h1 {
-  font-size: 2em;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.vehicle-info h2,
-.vehicle-info h3 {
-  margin: 10px 0;
-  color: #666;
-}
-
-.vehicle-info p {
-  color: #555;
-  font-size: 1em;
-  margin: 5px 0;
-}
-
-.vehicle-info h3 {
-  color: #d9534f;
-}
-
-.error-container {
-  max-width: 600px;
-  margin: 50px auto; /* Center the container */
-  padding: 20px;
-  text-align: center;
-  background-color: white;
-  border: 1px solid #ccc;
+  justify-content: center;
+  align-items: center;
+  /* border: solid 1px red; */
+  box-shadow: 0 5px 10px var(--secondary-color);
   border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  height: 230px;
+  margin: 0.5rem;
 }
-
-footer{
-  margin: 20px;
+.namePrice {
+  width: 90%;
 }
-
-/* Styling the login card */
-.login-card {
-  background-color: #2f3e50; /* Dark background */
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 300px;
-  text-align: center;
-  margin: 0 auto;
-}
-
-/* Styling the title */
-.login-card h1 {
-  color: #fff;
-  margin-bottom: 20px;
-}
-.login-card p{
-  color: white;
-}
-
-.login-card a{
-  color: white;
-}
-
-/* Flash message style */
-.flash-message {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 5px;
-}
-
-/* Styling the labels */
-.login-form label {
-  display: block;
-  color: #fff;
-  text-align: left;
-  margin-bottom: 5px;
-}
-
-/* Styling the inputs */
-.login-form input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
-}
-
-/* Styling the button */
-.login-form button {
-  background-color: #fff;
-  color: #2f3e50;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-weight: bold;
-  width: 100%;
-  margin-bottom: 15px;
-}
-
-.login-form button:hover {
-  background-color: #ccc;
-}
-
-/* General Form Styles */
-
-.registration-card{
-  background-color: #2f3e50; /* Dark background */
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 300px;
-  text-align: center;
-  margin: 0 auto;
-}
-
-.registration-card h1{
-  color: #fff;
-  margin-bottom: 20px;
-}
-
-.registration-card p{
-  color: white;
-}
-
-.registration-form label {
-  display: block;
-  color: #fff;
-  text-align: left;
-  margin-bottom: 5px;
-}
-
-.registration-form input[type="text"],
-.registration-form input[type="email"],
-.registration-form input[type="password"] {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
-}
-
-.registration-form input[type="text"]:focus,
-.registration-form input[type="email"]:focus,
-.registration-form input[type="password"]:focus {
-  outline: none;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.8);
-}
-
-.registration-form button {
-  background-color: #fff;
-  color: #2f3e50;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-weight: bold;
-  width: 100%;
-  margin-bottom: 15px;
-}
-
-.registration-form button:hover {
-  background-color: #ccc;
-}
-
-/* Additional Link for Sign-up */
-.registration-form .sign-up-link {
-  color: #6fc1ff; /* Light blue color to match login */
-  display: block;
-  text-align: center;
-  margin-top: 20px;
-  font-size: 14px;
-}
-
-.registration-form .sign-up-link:hover {
-  text-decoration: underline;
-}
-
-.flash-message {
-  color: red;
-  text-align: center;
-  margin-bottom: 1em;
-}
-
-button[type="button"] {
-  display: block;
-  margin: 1em 0;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 0.75em;
-  cursor: pointer;
-}
-
-button[type="button"]:hover {
-  background-color: #0056b3;
-}
-
-.password-hint{
-  color: #8bf8e0;
-  font-size:x-small;
-
-}
-/* Container for the password field and the toggle icon */
-.password-container {
-  position: relative;
+.namePrice h2 {
+  display: flex;
   
+
 }
 
-/* Style the password input to match the other inputs */
-.password-container input {
+.namePrice a{
+  
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  padding-right: 0px; /* Leave space for the icon */
-}
-
-/* Position and style the eye icon */
-.toggle-password {
-  position: absolute;
-  top: 35%;
-  right: 2px;
-  transform: translateY(-50%);
-  cursor: pointer;
-  font-size: 15px;
-  color: #888;
-}
-
-.toggle-password:hover {
-  color: #333;
-}
-
-.notice{
-  color: rgb(255, 112, 77);
-  list-style-type: none;
-}
-
-.alert-success p{
-  color:rgb(3, 184, 78);
-  list-style-type: none;
-}
-
-
-.form-container {
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-}
-
-.form-container h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 24px;
-  color: #333;
-}
-
-.form-container label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: #333;
-}
-
-.form-container input[type="text"],
-.form-container input[type="number"],
-.form-container select {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-  box-sizing: border-box;
-}
-
-/* Add hover/focus effect for inputs */
-.form-container input[type="text"]:focus,
-.form-container input[type="number"]:focus,
-.form-container select:focus {
-  border-color: #007bff;
-  outline: none;
-}
-
-.form-container button[type="submit"] {
-  width: 100%;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 12px;
-  font-size: 18px;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-}
-
-.form-container button[type="submit"]:hover {
-  background-color: #0056b3;
-}
-
-/* Style for error and success messages */
-.alert {
-  padding: 15px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  text-align: center;
-}
-
-.alert-danger {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-.alert-success {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-/* Styling for the Inventory Management container */
-.management-container {
-  max-width: 800px;
-  margin: 50px auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-}
-
-/* Page title */
-.management-container h1 {
-  text-align: center;
-  margin-bottom: 30px;
-  color: #333;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-/* List of management options */
-.management-container ul {
-  text-align: center;
-  list-style-type: none;
-  padding: 0;
-}
-
-.management-container ul li {
-  margin-bottom: 15px;
-}
-
-/* Links to add classification or inventory */
-.management-container ul li a {
-  display: inline-block;
-  background-color: #007bff;
-  color: #fff;
-  padding: 12px 20px;
-  border-radius: 5px;
   text-decoration: none;
-  font-size: 18px;
-  transition: background-color 0.3s ease;
+  font-family: var(--paragraph-font);
+  color: var(--text-color1);
+  text-align: center;
+
+}
+.namePrice span {
+  padding: 0 0.5rem;
+  background: var(--primary-color);
+  color: var(--text-color2);
 }
 
-.management-container ul li a:hover {
-  background-color: #0056b3;
+main {
+  display: flex;
+  flex-direction: column;
 }
+
+main h1 {
+  margin: 1rem 0.5rem;
+}
+
+.details-page {
+  /* border: 1px solid red; */
+  padding: 0.5rem 1rem;
+}
+.details {
+  padding: 1rem 0;
+}
+.details h2, h3, p {
+  font-family: var(--paragraph-font);
+  padding: 0.5rem 0.3rem;
+}
+
+.details h2, 
+.details :nth-child(4) {
+  background-color: var(--secondary-color);
+  color: var(--text-color2);
+}
+.details :nth-child(3) i {
+  font-weight: bold;
+}
+
+.loginForm,
+.registerForm,
+.addClassForm,
+.addInvForm,
+.editInvForm,
+.deleteForm {
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 0.5rem;
+  width: 300px;
+  align-self: center;
+  border-radius: 10px;
+  box-shadow: 0 5px 10px var(--secondary-color);
+  label {
+    display: block;
+    font-family: 0.8rem;
+    padding-top: 0.2rem;
+    font-family: var(--paragraph-font);
+  }
+  input[type="email"],
+  input[type="password"],
+  input[type="text"],
+  input[type="number"],
+  textarea,
+  select {
+    display: block;
+    margin: 0.3rem 0;
+    width: 250px;
+    padding: 0.5rem 0.4rem;
+    border-radius: 5px;
+    border: 1.5px solid var(--primary-color);
+  }
+
+  input[type="submit"] {
+    margin: 0.5rem 0;
+    padding : 0.2rem 0.4rem;
+    width: fit-content;
+    font-family: var(--paragraph-font);
+    border: 1px solid var(--primary-color);
+    font-size: 1rem;
+    border-radius: 5px;
+    background-color: var(--primary-color);
+    color: var(--text-color2);
+  }
+  a {
+    text-decoration: none;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    font-style: italic;
+  }
+  div {
+    padding: 0 1rem;
+  }
+
+  input:required:invalid:hover, input:focus:invalid:hover {
+    background-color: rgb(233, 189, 189);
+  }
+
+  input:required:valid {
+    background-color: rgb(168, 218, 168);
+  }
+
+}
+
+.notice {
+  list-style: none;
+  padding: 1rem 1rem;
+  color: orangered;
+
+}
+
+#vmanage,
+#vmanagec {
+  padding: 0 2rem;
+}
+@media screen and (min-width: 1000px) {
+  html {
+    background-image: url(../images/site/small_check.jpg);
+  }
+
+  body {
+    width: 850px;
+    background: white;
+    margin: 1rem auto;
+    border: solid 4px rgb(30, 165, 202);
+  }
+
+  .homepage {
+    display: grid;
+    grid-template: 50% 50% / 50% 50%;
+    padding: 0 0.5rem;
+  }
+
+  .hero {
+    grid-column:1/3;
+  }
+
+  .upgrades {
+    grid-column: 1/2;
+    grid-row: 2;
+  }
+
+  .reviews {
+    grid-column: 2/3;
+    grid-row: 2;
+  }
+
+  .upgrade-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  .reviews ul{
+    margin-top: 3rem;
+  }
+  .reviews ul li {
+    font-size: 1.3rem;
+    padding: 0.1rem 1.2rem;
+  }
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero img {
+    align-self: center;
+  }
+  .delorean-desc {
+  top: 90px;
+  left: 110px;
+  font-size: 1.5rem;
+    
+  }
+
+  .delorean-desc button {
+    font-size: 1.5rem;
+  }
+
+  #inv-display {
+    /* border: solid 1px orange; */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    justify-items: center;
+  }
+
+  #inv-display li {
+    
+    width: 280px;
+    height: 250px;
+  }
+
+  .details-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  }
+  .details {
+  padding: 2rem 2rem;
+  }
+  .details-page img {
+    padding: 2rem 1rem;
+  }
+
+}
+

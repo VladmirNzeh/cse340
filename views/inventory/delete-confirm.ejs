@@ -1,21 +1,35 @@
-<% layout('layouts/layout') %>
+<!-- A content heading -->
+<% if (title) { %>
+    <h1><%= title%></h1>
+    <%} else {
+        res.redirect('/')
+    }%>
 
-<h1>Delete <%= item.inv_make %> <%= item.inv_model %></h1>
-<p class="warning">Confirm Deletion - This action is permanent.</p>
+<!-- A message -->
+<%- messages()  %>
 
-<form action="/inv/delete" method="post">
-  <label>Make</label>
-  <input type="text" name="inv_make" value="<%= item.inv_make %>" readonly>
+<% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } %>
 
-  <label>Model</label>
-  <input type="text" name="inv_model" value="<%= item.inv_model %>" readonly>
+<form id="deleteForm" class="editInvForm" method="POST" action="/inv/delete">
+    
+    <label for="inv_make">Make: <input type="text" name="inv_make" pattern="[a-zA-Z]{3,}" placeholder="Min of 3 character" id="inv_make" value="<%= locals.inv_make %>" required readonly ></label>
 
-  <label>Year</label>
-  <input type="text" name="inv_year" value="<%= item.inv_year %>" readonly>
+    <label for="inv_model">Model: <input type="text" name="inv_model" pattern="[a-zA-Z]{3,}" placeholder="Min of 3 character" id="inv_model" required value="<%= locals.inv_model %>" readonly></label>
 
-  <label>Price</label>
-  <input type="text" name="inv_price" value="<%= item.inv_price %>" readonly>
+    <label for="inv_price">Price: <input type="number" name="inv_price" step="1" id="inv_price" required value="<%= locals.inv_price %>" placeholder="Decimal or integer" readonly ></label>
 
-  <input type="hidden" name="inv_id" value="<%= item.inv_id %>">
-  <input type="submit" value="Delete" class="btn-danger">
+    <label for="inv_year">Year: <input type="text" name="inv_year" pattern="\d{4}" maxlength="4" minlength="4" id="inv_year" required value="<%= locals.inv_year %>" placeholder="4-digit year" readonly ></label>
+    <div><i>Confirm Deletion - The delete is permanent.</i></div>
+    <input type="submit" id="button" value="Delete vehicle"> 
+    
+    <input type="hidden" name="inv_id"
+    <% if(locals.inv_id) {%> value = "<%= locals.inv_id%>"<%} %>> 
+        
+  
 </form>

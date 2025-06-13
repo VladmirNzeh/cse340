@@ -1,0 +1,37 @@
+<h1><%= title %></h1>
+<%- messages() %>
+ <!-- <p style="margin: 1rem;">Field is Required</p> -->
+<div class="content">
+  <form action="/inv/newClassification" method="post" id="newClassificationForm">
+    <div class="form-group">
+      <label for="classification_name">Classification Name:</label>
+      <p>NAME MUST BE ALPHABETIC CHARACTERS ONLY.</p>
+      <input
+        type="classification_name"
+        id="classification_name"
+        name="classification_name"
+      />
+    <label>
+        <br>
+    <button class="hero-btn" type="submit">Add Classification</button>
+  </form>
+  <br>
+  <div style="margin-top: 1rem">
+    <a href="/account/register">Return Home</a>
+  </div>
+</div>
+<script>
+  const input = document.getElementById('classification_name');
+  input.addEventListener('input', function() {
+    const alphaRegex = /^[A-Za-z]+$/;
+    if (input.value === "") {
+      input.classList.remove('valid', 'invalid');
+    } else if (alphaRegex.test(input.value)) {
+      input.classList.add('valid');
+      input.classList.remove('invalid');
+    } else {
+      input.classList.add('invalid');
+      input.classList.remove('valid');
+    }
+  });
+</script>
