@@ -7,19 +7,39 @@ const invCont = {}
  * Build inventory by classification view
  * ******************** */
 invCont.buildByClassificationId = async function(req, res, next) {
+  try {
     const classification_id = req.params.classificationId
-    console.log(`this is the classification ${classification_id}`)
+    console.log(`Requested classification ID: ${classification_id}`)
+
     const data = await invModel.getInventoryByClassificationId(classification_id)
-    const grid = await utilities.buildClassificationGrid(data)
-    let nav = await utilities.getNav()
-    const className = data[0].classification_name
-    const intError = "<a href= /error >Error link</a>"
-    res.render("./inventory/classification", {
-        title: className + " vehicles",
+
+    // Protect against empty or missing data
+    if (!data || data.length === 0) {
+      const nav = await utilities.getNav()
+      const intError = "<a href='/error'>Error link</a>"
+      return res.status(404).render("errors/error", {
+        title: "Not Found",
         nav,
-        grid,
-        intError,
+        message: "No vehicles found for this classification.",
+        intError
+      })
+    }
+
+    const grid = await utilities.buildClassificationGrid(data)
+    const nav = await utilities.getNav()
+    const className = data[0].classification_name
+    const intError = "<a href='/error'>Error link</a>"
+
+    res.render("./inventory/classification", {
+      title: `${className} vehicles`,
+      nav,
+      grid,
+      intError
     })
+  } catch (error) {
+    console.error("Controller error:", error.message)
+    next(error)
+  }
 }
 
 /* **********************
@@ -27,24 +47,44 @@ invCont.buildByClassificationId = async function(req, res, next) {
  * ******************** */
 
 invCont.buildByItemId = async function(req, res, next) {
+  try {
     const inventory_Id = req.params.inventoryId
     console.log(`this is the item Id ${inventory_Id}`)
+    
     const data = await invModel.getDetailsByInventoryId(inventory_Id)
     console.log(data)
+
+    // SAFEGUARD
+    if (!data || data.length === 0) {
+      const nav = await utilities.getNav()
+      const intError = "<a href='/error'>Error link</a>"
+      return res.status(404).render("errors/error", {
+        title: "Vehicle Not Found",
+        nav,
+        message: "Vehicle details not found.",
+        intError
+      })
+    }
+
     const grid = await utilities.buildInventoryGrid(data)
-    let nav = await utilities.getNav()
+    const nav = await utilities.getNav()
     const year = data[0].inv_year
     const make = data[0].inv_make
     const model = data[0].inv_model
-    const intError = "<a href= /error >Error link</a>"
-    res.render("./inventory/detail", {
-        title: `${year }${make }${model}`,
-        nav,
-        grid,
-        intError,
-    })
+    const intError = "<a href='/error'>Error link</a>"
 
+    res.render("inventory/detail", {
+      title: `${year} ${make} ${model}`,
+      nav,
+      grid,
+      intError,
+    })
+  } catch (error) {
+    console.error("Error loading vehicle details:", error)
+    next(error)
+  }
 }
+
 
 /* **********************
  * Management  view

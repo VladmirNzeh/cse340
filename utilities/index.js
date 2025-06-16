@@ -63,27 +63,36 @@ Util.buildClassificationGrid = async function(data) {
     return grid
 }
 
-Util.buildInventoryGrid = async function(data) {
-    let grid
-    if(data.length > 0) {
-        grid = `
-        <section class= "details-page">
-            <div class= "full-vehi-image">
-                <img src= "${data[0].inv_image}" alt= "Image of ${data[0].inv_make} ${data[0].inv_model} on CSE Motors" />                
-            </div>
-            <div class= "details">
-                <h2>${data[0].inv_make}${data[0].inv_model} Details</h2>
-                <h3>Price: $${new Intl.NumberFormat().format(data[0].inv_price)}</h3>
-                <p><i>Description</i>: ${data[0].inv_description}</p>
-                <p>Color: ${data[0].inv_color}</p>
-                <p>Miles: ${new Intl.NumberFormat().format(data[0].inv_miles)}</p>
-            </div>
-        </section>`
-    } else {
-        grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
-    }
-    return grid
+Util.buildClassificationGrid = async function(data) {
+  let grid = ""  // <-- initialize here
+  if (data.length > 0) {
+    grid = '<ul id="inv-display">'
+    data.forEach(vehicle => {
+      grid += '<li>'
+      grid +=  '<a href="../../inv/detail/' + vehicle.inv_id 
+      + '" title="View ' + vehicle.inv_make + ' ' + vehicle.inv_model 
+      + ' details"><img src="' + vehicle.inv_thumbnail 
+      +'" alt="Image of '+ vehicle.inv_make + ' ' + vehicle.inv_model 
+      +' on CSE Motors" /></a>'
+      grid += '<div class="namePrice">'
+      grid += '<hr />'
+      grid += '<h2>'
+      grid += '<a href="../../inv/detail/' + vehicle.inv_id +'" title="View ' 
+      + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">' 
+      + vehicle.inv_make + ' ' + vehicle.inv_model + '</a>'
+      grid += '</h2>'
+      grid += '<span>$' 
+      + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>'
+      grid += '</div>'
+      grid += '</li>'
+    })
+    grid += '</ul>'
+  } else {
+    grid = '<p class="notice">Sorry, no matching vehicles could be found.</p>'
+  }
+  return grid
 }
+
 
 /* ****************************************
  * Middleware For Handling Errors

@@ -57,7 +57,12 @@ app.use(cookieParser())
 // Applying the middleware to check the JWT to confirm that it matches the one created
 app.use(utilities.checkJWTToken)
 
-
+// accountData for all views
+app.use((req, res, next) => {
+  res.locals.accountData = req.session.accountData || null
+  next()
+})
+  
 /* ***********************
  * Routes
  *************************/
