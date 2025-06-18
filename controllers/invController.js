@@ -49,13 +49,9 @@ invCont.buildByClassificationId = async function(req, res, next) {
 invCont.buildByItemId = async function(req, res, next) {
   try {
     const inventory_Id = req.params.inventoryId
-    console.log(`this is the item Id ${inventory_Id}`)
-    
     const data = await invModel.getDetailsByInventoryId(inventory_Id)
-    console.log(data)
 
-    // SAFEGUARD
-    if (!data || data.length === 0) {
+    if (!data || !data.inv_id) {
       const nav = await utilities.getNav()
       const intError = "<a href='/error'>Error link</a>"
       return res.status(404).render("errors/error", {
@@ -66,24 +62,20 @@ invCont.buildByItemId = async function(req, res, next) {
       })
     }
 
-    const grid = await utilities.buildInventoryGrid(data)
     const nav = await utilities.getNav()
-    const year = data[0].inv_year
-    const make = data[0].inv_make
-    const model = data[0].inv_model
     const intError = "<a href='/error'>Error link</a>"
 
     res.render("inventory/detail", {
-      title: `${year} ${make} ${model}`,
+      title: `${data.inv_year} ${data.inv_make} ${data.inv_model}`,
       nav,
-      grid,
-      intError,
+      vehicle: data,
+      intError
     })
   } catch (error) {
-    console.error("Error loading vehicle details:", error)
     next(error)
   }
 }
+
 
 
 /* **********************

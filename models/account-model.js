@@ -10,12 +10,15 @@ const { get } = require("../routes/static")
 * ************** */
 
 async function registerAccount(account_firstname, account_lastname, account_email, account_password) {
-    try {
-        const sql = "INSERT INTO account(account_firstname, account_lastname, account_email, account_password, account_type) VALUES ($1, $2, $3, $4, 'Client') RETURNING *"
-        return await pool.query(sql, [account_firstname, account_lastname, account_email, account_password])
-    } catch (error) {
-        return error.message
-    }
+  try {
+    const bcrypt = require("bcrypt") // typo fixed from "bycrypt" to "bcrypt"
+    const hashedPassword = await bcrypt.hash(account_password, 10)
+    const sql = "INSERT INTO account (account_firstname, account_lastname, account_email, account_password) VALUES ($1, $2, $3, $4) RETURNING *"
+    return await pool.query(sql, [account_firstname, account_lastname, account_email, hashedPassword])
+  } catch (error) {
+    console.error("Registration error:", error.message)
+    return null // or throw error if you want to handle it upstream
+  }
 }
 
 /* **************
@@ -79,16 +82,16 @@ async function updatePassword(account_id, hashedPassword) {
   try {
     const sql = `
     UPDATE account
-    SET account_id = $1
+    SET account_password = $1
     WHERE account_id = $2`
     const values = [hashedPassword, account_id]
     const result = await pool.query(sql, values)
     return result
   } catch (error) {
-    return new Error("Error updating password")
+    return new Error("Error updating password: " + error.message)
   }
-  
 }
+
 
 module.exports = {
   registerAccount, 

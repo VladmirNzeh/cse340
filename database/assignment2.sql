@@ -10,7 +10,7 @@ UPDATE public.account SET account_type = 'Admin' WHERE account_id = 1;
 -- Query 3 Deleting the Tony Stark record from the database
 DELETE FROM public.account WHERE account_id = 1;
 
--- Query 4 Changing invetory description
+-- Query 4 Changing inventory description
 UPDATE 
   public.inventory
 SET 
