@@ -85,25 +85,37 @@ validate.loginRules = () => {
  * Check data and return errors or continue to registration
  ***************************** */
 
-validate.checkRegData =async (req, res, next) => {
-    const {account_firstname, account_lastname, account_email} = req.body
-    let errors = []    
-    errors = validationResult(req)
-    if (!errors.isEmpty()) {
-        let nav = await utilities.getNav()
-        res.render("account/register", {
-            errors,
-            title: "Registration",
-            nav,
-            account_firstname,
-            account_lastname,
-            account_email,
-            intError: "<a href= /error >Error link</a>",
-        })
-        return
-    }
-    next()
+validate.checkRegData = async (req, res, next) => {
+  // 🔐 Guard against undefined req.body
+  if (!req.body) {
+    console.error("❌ req.body is undefined in checkRegData")
+    req.flash("notice", "Something went wrong. Please try again.")
+    return res.redirect("/account/register")
+  }
+
+  // 💥 Destructure safely now that we confirmed req.body exists
+  const { account_firstname, account_lastname, account_email } = req.body
+
+  // ✅ Validate input using express-validator
+  let errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    return res.render("account/register", {
+      errors,
+      title: "Registration",
+      nav,
+      account_firstname,
+      account_lastname,
+      account_email,
+      intError: "<a href= /error >Error link</a>",
+    })
+  }
+
+  // 👍 Validation passed, move to the next middleware
+  next()
 }
+
 
 validate.checkLogData =async (req, res, next) => {
     const {account_email} = req.body

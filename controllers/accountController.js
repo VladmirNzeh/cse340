@@ -44,7 +44,7 @@ async function buildAccountManagement(req, res, next) {
     res.render("account/account-management", {
         title: "Account Management",
         nav,
-        accountData: req.accountData, // Assuming accountData is set in middleware
+        accountData: res.locals.accountData, // Assuming accountData is set in middleware
         intError,
         errors: null,
     })
@@ -62,50 +62,57 @@ async function registerAccount(req, res) {
         account_password,
     } = req.body
 
-    // Hash the password before storing
-    let hashedPassword
     try {
-        // regular password and cost (salt is generated automatically)
-        hashedPassword = await bcrypt.hashSync(account_password, 10)
+
+        let hashedPassword = await bcrypt.hash(account_password, 10)
+
+        // 💡 Attempt to register the account in the DB
+        const regResult = await accountModel.registerAccount(
+            account_firstname,
+            account_lastname,
+            account_email,
+            hashedPassword
+        )
+
+        if (regResult) {
+            req.flash(
+                "notice",
+                `Congratulations, you\'re registered ${account_firstname}. Please log in.`
+            )
+
+            res.status(201).render("account/login", {
+                title: "Login",
+                nav,
+                intError: "<a href='/error'>Error link</a>",
+                errors: null,
+            })
+        } else {
+            req.flash("notice", "Sorry, the registration failed.")
+
+            // req.status(501).render(...)
+
+            res.status(501).render("account/register", {
+                title: "Registration",
+                nav,
+                intError: "<a href='/error'>Error link</a>",
+                errors: null,
+            })
+        }
+
     } catch (error) {
-        req.flash("notice", 'Sorry, there was an error processing the registration.')
+        console.error("Registration error:", error)
+
+        req.flash("notice", "Sorry, there was an error processing the registration.")
+
         res.status(500).render("account/register", {
             title: "Registration",
             nav,
             errors: null,
-            intError: "<a href= /error >Error link</a>"
-        })
-    }
-
-
-    const regResult = await accountModel.registerAccount(
-        account_firstname,
-        account_lastname,
-        account_email,
-        hashedPassword
-    )
-
-    if (regResult) {
-        req.flash(
-            "notice",
-            `Congratulations, you\'re registerd ${account_firstname}. Please log in.`
-        )
-        res.status(201).render("account/login", {
-            title: "Login",
-            nav,
-            intError: "<a href= /error >Error link</a>",
-            errors: null,
-        })
-    } else {
-        req.flash("notice", "Sorry, the registration failed.")
-        req.status(501).render("account/register", {
-            title: "Registration",
-            nav,
-            intError: "<a href= /error >Error link</a>",
-            errors: null,
+            intError: "<a href='/error'>Error link</a>"
         })
     }
 }
+
 
 /* ****************************************
  *  Process login request
@@ -157,7 +164,7 @@ async function accountLogin(req, res) {
 /* ****************************************
  * Deliver Update Account View
  **************************************** */
-async function buildUpdateAcountView(req, res) {
+async function buildUpdateAccountView(req, res) {
   const account_id = parseInt(req.params.account_id)
   const account = await accountModel.getAccountById(account_id)
   const nav = await utilities.getNav()
@@ -166,8 +173,7 @@ async function buildUpdateAcountView(req, res) {
   res.render("account/update-account", {
     title: "Update Account",
     nav,
-    accountData: req.accountData,
-    account,
+    accountData: account,
     intError,
     errors: null,
   })
@@ -206,7 +212,7 @@ async function updateAccountInfo(req, res) {
  * Process Update Password
  **************************************** */
 async function updatePassword(req, res) {
-  const { account_id, account_password } = req.body
+  const { account_id, new_password } = req.body
   const nav = await utilities.getNav()
   const intError = "<a href= /error >Error link</a>"
 
@@ -254,7 +260,7 @@ module.exports = {
   registerAccount, 
   buildAccountManagement, 
   accountLogin,
-  buildUpdateAcountView,
+  buildUpdateAccountView,
   updateAccountInfo,
   updatePassword,
   logoutAccount,

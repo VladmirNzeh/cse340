@@ -11,8 +11,6 @@ const { get } = require("../routes/static")
 
 async function registerAccount(account_firstname, account_lastname, account_email, account_password) {
   try {
-    const bcrypt = require("bcrypt") // typo fixed from "bycrypt" to "bcrypt"
-    const hashedPassword = await bcrypt.hash(account_password, 10)
     const sql = "INSERT INTO account (account_firstname, account_lastname, account_email, account_password) VALUES ($1, $2, $3, $4) RETURNING *"
     return await pool.query(sql, [account_firstname, account_lastname, account_email, hashedPassword])
   } catch (error) {

@@ -1,31 +1,32 @@
+// Bring in Pool from pg and dotenv for env variables
 const { Pool } = require("pg")
 require("dotenv").config()
 
-let pool
-
-// Use SSL in all environments (Render requires it)
-pool = new Pool({
+// Create a new pool instance with SSL enabled (required by Render)
+const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false,
   },
 })
 
-// Log queries in development
+// 🔍 Development logging patch
+// If we're in development mode, wrap the pool's query function
+// to log each SQL query before it runs (for easier debugging)
 if (process.env.NODE_ENV === "development") {
-  module.exports = {
-    async query(text, params) {
-      try {
-        const res = await pool.query(text, params)
-        console.log("executed query", { text })
-        return res
-      } catch (error) {
-        console.error("error in query", { text })
-        throw error
-      }
-    },
+  const originalQuery = pool.query.bind(pool) // preserve original query method
+
+  pool.query = async (text, params) => {
+    try {
+      const res = await originalQuery(text, params)
+      console.log("✅ executed query", { text }) // dev logging
+      return res
+    } catch (error) {
+      console.error("❌ error in query", { text }) // dev error logging
+      throw error // allow caller to handle it
+    }
   }
-} else {
-  // Production, no logging
-  module.exports = pool
 }
+
+// This allows you to use .query AND .end() from anywhere in your app
+module.exports = pool

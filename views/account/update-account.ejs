@@ -2,7 +2,7 @@
 <%- messages() %>
 <div class="content">
   <h3>Change Personal Info</h3>
-  <form action="/account/account-update" method="post" id="updateAccountForm">
+  <form action="/account/update/info" method="post" id="updateAccountForm">
     <div class="form-group">
       <label for="account_firstname">First Name:</label>
       <input
@@ -47,7 +47,7 @@
   </form>
   <br />
   <h3>Change Password</h3>
-  <form action="/account/change-password" method="post" id="changePasswordForm">
+  <form action="/account/update/password" method="post" id="changePasswordForm">
     <div class="form-group">
       <!-- <label for="current_password">Current Password:</label>
       <input

@@ -25,6 +25,7 @@ router.get("/register", utilities.handleErrors(accountController.buildRegister))
  * Unit 5, JWT authorization activity
  *****************************/
 router.get("/",
+    utilities.checkJWTToken, //To check if the client is authorized, if not the access for this view is forbidden.
     utilities.checkLogin, //To check if the client is authorized, if not the access for this view is forbidden.    
     utilities.handleErrors(accountController.buildAccountManagement)
 
@@ -44,13 +45,13 @@ router.post("/register",
 router.post( "/login",
     regValidate.loginRules(),
     regValidate.checkLogData, 
-    utilities.handleErrors(accountController.accountLogin)
+    utilities.handleErrors(accountController.accountLogin) 
 )
 
 // Update account view
 router.get("/update/:account_id",
   utilities.checkLogin,
-  utilities.handleErrors(accountController.buildUpdateAcountView))
+  utilities.handleErrors(accountController.buildUpdateAccountView))
 
 // Process account info update
 router.post("/update/info",
