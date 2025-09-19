@@ -36,9 +36,6 @@ img {
   display: grid;
   grid-template-columns: 50% 50%;
   margin: 1rem 0.5rem;
-  /* justify-content: space-around; */
-  /* border: solid 1px red; */
-  /* width: 100%; */
 }
 
 .siteName a {
@@ -48,7 +45,6 @@ img {
 }
 
 #tools {
-  /* border: solid 1px red; */
   display: flex;
   justify-content: flex-end;
 }
@@ -62,17 +58,16 @@ img {
 nav ul {
   display: flex;
   flex-direction: row;
-  /* border: solid 1px red; */
   justify-content: space-between;
   list-style: none;
   padding: 1.2rem 1rem;
-  background-color: #2a2929;
-  color: aliceblue;
+  background-color: var(--secondary-color);
+  color: var(--text-color2);
 }
 
 nav ul li a {
   text-decoration: none;
-  color: aliceblue;
+  color: var(--text-color2);
 }
 
 /******* HERO ***************/
@@ -96,16 +91,16 @@ nav ul li a {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  color: rgb(30, 165, 202);
+  color: var(--primary-color);
   background: #ffffff8e;  
 }
 
 .delorean-desc button {
   width: fit-content;
   padding: 0.5rem;
-  background: rgb(30, 165, 202);
+  background: var(--primary-color);
   border: none;
-  color: #2a2929;
+  color: var(--secondary-color);
 }
 
 /******* REVIEWS ***************/
@@ -146,7 +141,7 @@ nav ul li a {
 }
 
 .imag {
-  background: rgb(30, 165, 202);
+  background: var(--primary-color);
   height: 100px;
   display: flex;
   justify-content: center;
@@ -168,7 +163,7 @@ footer {
     width: 850px;
     background: white;
     margin: 1rem auto;
-    border: solid 4px rgb(30, 165, 202);
+    border: solid 4px var(--primary-color);
   }
 
   .homepage {
@@ -192,13 +187,13 @@ footer {
   }
 
   .upgrade-grid {
-    display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   }
 
   .reviews ul {
     margin-top: 3rem;
   }
+
   .reviews ul li {
     font-size: 1.3rem;
     padding: 0.1rem 1.2rem;
@@ -212,5 +207,29 @@ footer {
 
   .delorean-desc button {
     font-size: 1.5rem;
+  }
+}
+
+/******* VEHICLE DETAIL VIEW ***************/
+/* ✅ Added for vehicle detail layout */
+.vehicle-detail-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.vehicle-image-column {
+  flex: 1 1 300px;
+}
+
+.vehicle-detail-info {
+  flex: 1 1 300px;
+}
+
+/* ✅ Responsive stacking for small screens */
+@media (max-width: 768px) {
+  .vehicle-detail-row {
+    flex-direction: column;
   }
 }
