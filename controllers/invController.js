@@ -9,6 +9,7 @@ const invCont = {};
 invCont.buildByClassificationId = async function(req, res, next) {
   try {
     const classification_id = req.params.classificationId;
+    console.log(`Requested classification ID: ${classification_id}`);
     const data = await invModel.getInventoryByClassificationId(classification_id);
 
     if (!data || data.length === 0) {

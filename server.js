@@ -10,9 +10,10 @@ const expressLayouts = require("express-ejs-layouts")
 const env = require("dotenv").config()
 const app = express()
 const static = require("./routes/static")
-const utilities = require("./utilities/")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
+const utilities = require("./utilities/")
+
 // const session = require("express-session")
 const pool = require("./database")
 // const bodyParser = require("body-parser")
@@ -20,10 +21,9 @@ const pool = require("./database")
 /* ***********************
  * View Engine and Templates
  *************************/
-app
- .set("view engine", "ejs")
- .use(expressLayouts)
- .set("layout", "./layouts/layout")
+app.set("view engine", "ejs")
+app.use(expressLayouts)
+app.set("layout", "./layouts/layout")
 
 
 /* ***********************
@@ -36,6 +36,9 @@ app.get("/", utilities.handleErrors(baseController.buildHome))
 //app.get("/", function(req, res) {
 //  res.render("index", {title: "Home"})
 //})
+
+// Intentional Error Route
+app.get("/error", utilities.handleErrors(baseController.buildError))
 
 // Inventory routes
 app.use("/inv", inventoryRoute)
@@ -56,7 +59,8 @@ app.use(async(err, req, res, next) => {
   res.render("errors/error", {
     title: err.status || 'Server Error',
     message,
-    nav
+    nav,
+    intError: "<a href= /error >Error link</a>"
   })
 })
 
