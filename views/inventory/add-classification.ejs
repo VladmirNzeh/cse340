@@ -1,0 +1,24 @@
+<!-- A content heading -->
+<% if (title) { %>
+    <h1><%= title%></h1>
+    <%} else {
+        res.redirect('/')
+    }%>
+
+<!-- A message -->
+<%- messages()  %>
+
+<% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } %>
+
+<form class="addClassForm" method="POST" action="/inv/add-classification">
+
+    <label for="classification_name">Classification Name:<input type="text" name="classification_name" id="classification_name" required pattern="^[a-zA-Z0-9]+$" title="No spaces or special characters allowed" ></label>
+    <div><i>Name must be alphabetic characters only with no spaces</i></div>
+    <input type="submit" value="Add classification">    
+</form>

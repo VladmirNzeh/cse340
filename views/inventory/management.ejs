@@ -1,0 +1,27 @@
+<h1><%= title %></h1>
+<%- messages() %>
+<div class="manage-inventory">
+  <ul>
+    <li><a href="/views/inventory/newClassification.ejs">Add New Classification</a></li>
+    <li><a href="/views/inventory/newVehicle.ejs">Add New Vehicle</a></li>
+  </ul>
+</div>
+<p>Manage your inventory by adding new classifications or vehicles.</p>
+<p>Use the links above to navigate to the respective pages.</p>
+
+<h2>Manage inventory</h2>
+<p>Choose a classification to see those inventory items.</p>
+
+<%- classifications %>
+<br>
+<table id="inventoryDisplay"></table>
+<br>
+
+<noscript>
+  JavaScript is required to view the inventory management page.
+</noscript>
+<br>
+
+<a class="hero-btn" href="/">Return Home</a>
+
+<script src="/public/js/inventory.js"></script>

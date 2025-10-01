@@ -14,7 +14,7 @@ baseController.buildError = async function(req, res, next) {
     const nav = await utilities.getNav()
     const intError = "<a href= /error >Error link</a>"
     res.render("errors/error", {
-        title: "Server Error",
+        title: "Sever Error",
         message: "Oh no! There was a crash. Maybe try a different route?",
         nav,
         intError,
@@ -22,3 +22,4 @@ baseController.buildError = async function(req, res, next) {
 }
 
 module.exports = baseController
+

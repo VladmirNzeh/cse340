@@ -1,0 +1,42 @@
+<!-- A content heading -->
+<% if (title) { %>
+    <h1><%= title%></h1>
+    <%} else {
+        res.redirect('/')
+    }%>
+
+<!-- A message -->
+<%- messages()  %>
+
+<% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } %>
+
+<form class="addInvForm" method="POST" action="/inv/add-inventory">
+    <div><i>All required</i></div>
+    <label for="classificationList">Classification:<%- optionsList  %></label>
+
+    <label for="inv_make">Make: <input type="text" name="inv_make" pattern="[a-zA-Z]{3,}" placeholder="Min of 3 character" id="inv_make" value="<%= locals.inv_make %>" required ></label>
+
+    <label for="inv_model">Model: <input type="text" name="inv_model" pattern="[a-zA-Z]{3,}" placeholder="Min of 3 character" id="inv_model" required value="<%= locals.inv_model %>"></label>
+
+    <label for="inv_description">Description:<textarea name="inv_description" rows="4" cols="50" placeholder="Enter the description..." id="inv_description" required ><%= locals.inv_description %></textarea></label>
+
+    <label for="inv_image">Image Path:<input type="text" name="inv_image" placeholder="/images/vehicles/imagename.png" id="inv_image" required value="<%= locals.inv_image %>"></label>
+
+    <label for="inv_thumbnail">Thumbnail Path:<input type="text" name="inv_thumbnail" placeholder="/images/vehicles/imagename.png" id="inv_thumbnail" required value="<%= locals.inv_thumbnail %>"></label>
+
+    <label for="inv_price">Price: <input type="number" name="inv_price" step="1" id="inv_price" required value="<%= locals.inv_price %>" placeholder="Decimal or integer"></label>
+
+    <label for="inv_year">Year: <input type="text" name="inv_year" pattern="\d{4}" maxlength="4" minlength="4" id="inv_year" required value="<%= locals.inv_year %>" placeholder="4-digit year"></label>
+
+    <label for="inv_miles">Miles: <input type="number" name="inv_miles" step="1" onkeydown="return event.keyCode !== 69 && event.keyCode !== 190 && event.keyCode !== 188" id="inv_miles" required value="<%= locals.inv_miles %>" placeholder="Digits only"></label>
+
+    <label for="inv_color">Color: <input type="text" name="inv_color" id="inv_color" required value="<%= locals.inv_color %>"></label>
+    
+    <input type="submit" value="Add vehicle">    
+</form>

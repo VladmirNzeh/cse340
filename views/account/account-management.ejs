@@ -1,0 +1,27 @@
+ <div class="container">
+  <%- messages() %>
+  <h1>(⌐■_■ ) Account Management</h1>
+
+  <% if ((accountData.account_type === "Employee" || accountData.account_type === "Admin") && accountData.account_firstname) { %>
+  <h2>Welcome, <%= accountData.account_firstname %>, to your account management center!</h2>
+<% } %>
+
+  <p>You are currently logged in as <%= accountData.account_email %></p>
+
+  <!-- Update account info: visible to all -->
+  <p>
+    <a href="/account/update/<%= accountData.account_id %>">Edit Account Details</a>
+  </p>
+
+  <!-- Only show if Employee or Admin -->
+  <% if (accountData.account_type === "Employee" || accountData.account_type === "Admin") { %>
+    <h3>Inventory Management:</h3>
+    <a href="/views/account/" class="hero-btn">Manage Inventory</a>
+  <% } %>
+
+  <ul>
+    <li>
+      <a href="./logout">Logout</a>
+    </li>
+  </ul>
+</div>
