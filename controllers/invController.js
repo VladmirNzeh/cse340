@@ -347,7 +347,7 @@ invCont.deleteConfirmation = async function(req,res, next) {
     } else {
         req.flash("notice", "Sorry, the delete failed.")
         
-        res.redirect("inventory/delete-confirm")
+        res.redirect(`inventory/delete-confirm/${inv_id}`)
     }
 }
 

@@ -49,7 +49,7 @@ app.use(function(req, res, next) {
   next()
 })
 
-// Process refistration activity
+// Process registration activity
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true})) // For passing application/x-www-form-urlencoded
 

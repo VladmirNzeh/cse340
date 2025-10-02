@@ -1,71 +1,54 @@
-/***************************
- * Account routes
- * Deliver login view account
- *****************************/
 const utilities = require("../utilities/")
 const express = require("express")
 const router = new express.Router()
 const accountController = require("../controllers/accountController")
 const regValidate = require("../utilities/account-validation")
 
-
-
-/***************************
- * Deliver registration View
- * Deliver registration view account
- *****************************/
-router.get("/login",  utilities.handleErrors(accountController.buildLogin))
-
+// Login and registration views
+router.get("/login", utilities.handleErrors(accountController.buildLogin))
 router.get("/register", utilities.handleErrors(accountController.buildRegister))
 
-
-
-/***************************
- * Deliver Account Management View
- * JWT authorization activity
- *****************************/
+// Account management view (protected)
 router.get("/",
-    utilities.checkLogin, //To check if the client is authorized, if not the access for this view is forbidden.    
+    utilities.checkLogin,
     utilities.handleErrors(accountController.buildAccountManagement)
+);
 
-)
-
-// Route to logout
+// Logout
 router.get("/logout", utilities.handleErrors(accountController.accountLogout))
 
-/***************************
- * Process registration
- * Process registration activity
- *****************************/
+// Registration
 router.post("/register",
     regValidate.registrationRules(),
     regValidate.checkRegData,
-    utilities.handleErrors(accountController.registerAccount) )
+    utilities.handleErrors(accountController.registerAccount)
+);
 
-// Process the login attempt
-router.post( "/login",
+// Login
+router.post("/login",
     regValidate.loginRules(),
-    regValidate.checkLogData, 
+    regValidate.checkLogData,
     utilities.handleErrors(accountController.accountLogin)
-)
+);
 
-// Route to update account view
+// Update account view (protected)
 router.get("/update",
     utilities.checkLogin,
-    utilities.handleErrors(accountController.buildUpdateAccount))
+    utilities.handleErrors(accountController.buildUpdateAccount)
+);
 
-// Process the update account
-
-router.post("/update", 
+// Process account update
+router.post("/update",
     regValidate.updateAccountRules(),
     regValidate.checkUpdateData,
     utilities.handleErrors(accountController.updateAccount)
-)
+);
 
+// Change password
 router.post("/change",
     regValidate.changePasswordRules(),
     regValidate.checkChangePassword,
     utilities.handleErrors(accountController.changePassword)
-)
+);
 
 module.exports = router;
