@@ -39,7 +39,7 @@ router.post("/add-inventory",
     utilities.handleErrors(invController.addInventory)
 );
 
-// This route works with the URL in the inventory.js fil in js folder in public
+// This route works with the URL in the inventory.js file in js folder in public
 
 router.get("/getInventory/:classification_id",
     utilities.handleErrors(invController.getInventoryJSON)

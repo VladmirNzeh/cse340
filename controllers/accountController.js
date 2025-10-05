@@ -100,26 +100,11 @@ async function registerAccount(req, res) {
 }
 
 /* ****************************************
-*  Process login request
-* *************************************** */
+ *  Process login request
+ * ************************************ */
 async function accountLogin(req, res) {
   let nav = await utilities.getNav()
   const { account_email, account_password } = req.body
-
-  // Temporary fallback for grading
-  if (
-    account_email === 'manager@340.edu' && account_password === 'Admin@123'
-  ) {
-    const testAccount = {
-      account_id: 1,
-      account_email,
-      account_type: 'Admin',
-      account_firstname: 'Manager'
-    }
-    const accessToken = jwt.sign(testAccount, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
-    res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
-    return res.redirect("/account/")
-  }
 
   const accountData = await accountModel.getAccountByEmail(account_email)
   if (!accountData) {
@@ -129,19 +114,22 @@ async function accountLogin(req, res) {
       nav,
       errors: null,
       account_email,
-      intError: "<a href= /error >Error link</a>",
     })
   }
 
   try {
-    if (await bcrypt.compare(account_password, accountData.account_password)) {
+    const passwordMatch = await bcrypt.compare(account_password, accountData.account_password)
+    if (passwordMatch) {
       delete accountData.account_password
       const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
-      if (process.env.NODE_ENV === 'development') {
-        res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
-      } else {
-        res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
+
+      const cookieOptions = {
+        httpOnly: true,
+        maxAge: 3600 * 1000,
+        ...(process.env.NODE_ENV !== 'development' && { secure: true })
       }
+
+      res.cookie("jwt", accessToken, cookieOptions)
       return res.redirect("/account/")
     } else {
       req.flash("notice", "Please check your credentials and try again.")
@@ -150,14 +138,15 @@ async function accountLogin(req, res) {
         nav,
         errors: null,
         account_email,
-        intError: "<a href= /error >Error link</a>",
       })
     }
   } catch (error) {
+    console.error("Login error:", error)
     req.flash("notice", "Access Forbidden")
     return res.status(403).redirect("/account/login")
   }
 }
+
 
 /* ****************************************
 *  Logout account
@@ -265,6 +254,7 @@ async function changePassword(req, res) {
     })
   }
 }
+
 
 module.exports = {
   buildLogin,

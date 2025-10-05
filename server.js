@@ -59,6 +59,13 @@ app.use(cookieParser())
 // Applying the middleware to check the JWT to confirm that it matches the one created
 app.use(utilities.checkJWTToken)
 
+// Global variables for all views
+app.use((req, res, next) => {
+  res.locals.intError = "<a href='/error'>Error link</a>"
+  res.locals.year = new Date().getFullYear()
+  next()
+})
+
 /* ***********************
  * Routes
  *************************/

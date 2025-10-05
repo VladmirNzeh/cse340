@@ -76,7 +76,7 @@ Util.buildInventoryGrid = async function(data) {
                 <img src= "${data[0].inv_image}" alt= "Image of ${data[0].inv_make} ${data[0].inv_model} on CSE Motors" />                
             </div>
             <div class= "details">
-                <h2>${data[0].inv_make} ${data[0].inv_model} Details</h2>
+                <h2>${data[0].inv_year} ${data[0].inv_make} ${data[0].inv_model} Details</h2>
                 <h3>Price: $${new Intl.NumberFormat().format(data[0].inv_price)}</h3>
                 <p><i>Description</i>: ${data[0].inv_description}</p>
                 <p>Color: ${data[0].inv_color}</p>
@@ -133,7 +133,7 @@ Util.checkJWTToken = (req, res, next) => {
    process.env.ACCESS_TOKEN_SECRET,
    function (err, accountData) {
     if (err) {
-     req.flash("Please log in")
+     req.flash("notice", "Please log in.")
      res.clearCookie("jwt")
      return res.redirect("/account/login")
     }
