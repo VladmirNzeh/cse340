@@ -18,7 +18,7 @@ const session = require("express-session")
 const pool = require("./database")
 const bodyParser = require("body-parser")
 const cookieParser = require('cookie-parser')
-
+const commentRoute = require("./routes/commentRoute")
 
 /* ***********************
  * View Engine and Templates
@@ -85,6 +85,7 @@ app.use("/inv", inventoryRoute)
 
 // Accopunt route
 app.use("/account", accountRoute)
+app.use("/comments", commentRoute)
 
 // File Not Found Route - must be last route in list
 app.use(async(req, res, next) => {

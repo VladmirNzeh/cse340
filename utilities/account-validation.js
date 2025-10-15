@@ -84,7 +84,7 @@ validate.checkRegData = async (req, res, next) => {
 }
 
 validate.checkLoginData = async (req, res, next) => {
-  const { account_email } = req.body
+  const { account_email } = req.body || {}
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
     const nav = await utilities.getNav()
@@ -99,6 +99,7 @@ validate.checkLoginData = async (req, res, next) => {
   }
   next()
 }
+
 
 validate.updateAccountRules = () => {
   return [

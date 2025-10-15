@@ -1,4 +1,4 @@
-const utilities = require("../utilities/")
+const utilities = require("../utilities")
 const accountModel = require("../models/account-model")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
@@ -33,17 +33,37 @@ async function buildRegister(req, res, next) {
   })
 }
 
+// /* ****************************************
+// *  Account management view
+// * *************************************** */
+// async function buildAccountManagement(req, res, next) {
+//   let nav = await utilities.getNav()
+//   const intError = "<a href= /error >Error link</a>"
+//   res.render("account/", {
+//     title: "You are logged in",
+//     nav,
+//     intError,
+//     errors: null,
+//     account_type
+//   })
+// }
+
 /* ****************************************
 *  Account management view
 * *************************************** */
 async function buildAccountManagement(req, res, next) {
   let nav = await utilities.getNav()
+  const token = req.cookies.jwt
+  const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+  const accountData = await accountModel.getAccountByAccountId(decodedToken.account_id)
   const intError = "<a href= /error >Error link</a>"
+
   res.render("account/", {
     title: "You are logged in",
     nav,
     intError,
-    errors: null
+    errors: null,
+    accountData // ✅ This makes account_type and other fields available in the view
   })
 }
 

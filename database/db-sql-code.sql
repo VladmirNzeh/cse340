@@ -235,6 +235,39 @@ VALUES   (
     108247,
     'White',
     5
+  ), (
+    'Dodge',
+    'Charger',
+    '2018',
+    'The Dodge Charger is a sporty sedan that is great for everyday driving. It has a powerful engine and a sleek design that will turn heads wherever you go.',
+    '/images/charger.jpg',
+    '/images/charger-tn.jpg',
+    35000,
+    22015,
+    'Red',
+    2
+  ), (
+    'Toyota',
+    'Camry',
+    '2020',
+    'The Toyota Camry is a reliable and fuel-efficient sedan that is perfect for daily commuting. It offers a comfortable ride and a spacious interior for passengers.',
+    '/images/camry.jpg',
+    '/images/camry-tn.jpg',
+    24000,
+    15000,
+    'Blue',
+    5
+  ), (
+    'Honda',
+    'Civic',
+    '2019',
+    'The Honda Civic is a compact sedan that combines style, performance, and practicality. It features a modern design and advanced safety features for peace of mind on the road.',
+    '/images/civic.jpg',
+    '/images/civic-tn.jpg',
+    22000,
+    18000,
+    'Gray',
+    5
   );
 
 UPDATE inventory
