@@ -1,32 +1,26 @@
-<% layout('./layouts/layout') %>
-
-<!-- A content heading -->
+<%# Unit 4, Assignment 4, Task 2 %>
+<% if (title) {%>
 <h1><%= title %></h1>
+<%} else {res.redirect('/')} %>
 
-<!-- A message -->
 <%- messages() %>
 
 <% if (errors) { %>
-  <ul class="notice">
-    <% errors.array().forEach(error => { %>
-      <li><%= error.msg %></li>
-    <% }) %>
-  </ul>
+<ul class="message warning">
+  <% errors.array().forEach(error => { %>
+  <li><%= error.msg %></li>
+  <%  }) %>
+</ul>
 <% } %>
 
-<form class="addClassForm" method="POST" action="/inv/add-classification">
-  <label for="classification_name">
-    Classification Name:
-    <input
-      type="text"
-      name="classification_name"
-      id="classification_name"
-      required
-      pattern="^[a-zA-Z0-9]+$"
-      title="No spaces or special characters allowed"
-      value="<%= typeof classification_name !== 'undefined' ? classification_name : '' %>"
-    >
-  </label>
-  <div><i>Name must be alphabetic characters only with no spaces</i></div>
-  <input type="submit" value="Add Classification">
-</form>
+<div id="registerContainer">
+  <p>Field is required.</p>
+  <form class="formSpread" action="/inv/addClassification" method="post">
+    <fieldset>
+      <label for="carClassification">Classification Name</label>
+      <p>Name must be alphabetic characters only.</p>
+      <input type="text" name="classification_name" id="carClassification" required pattern="[a-zA-Z]*" value="<%= locals.classification_name %>">
+      <button type="submit">Add Classification</button>
+    </fieldset>
+  </form>
+</div>

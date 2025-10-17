@@ -1,54 +1,97 @@
-const utilities = require("../utilities/")
+/* ************************************
+ *  Account routes
+ *  Unit 4, deliver login view activity
+ *  ******************************** */
+// Needed Resources
 const express = require("express")
 const router = new express.Router()
 const accountController = require("../controllers/accountController")
+const utilities = require("../utilities")
 const regValidate = require("../utilities/account-validation")
 
-// Login and registration views
+/* ************************************
+ *  Deliver Login View
+ *  Unit 4, deliver login view activity
+ *  ******************************** */
 router.get("/login", utilities.handleErrors(accountController.buildLogin))
+
+/* ************************************
+ *  Deliver Registration View
+ *  Unit 4, deliver registration view activity
+ *  ******************************** */
 router.get("/register", utilities.handleErrors(accountController.buildRegister))
 
-// Account management view (protected)
-router.get("/",
-    utilities.checkLogin,
-    utilities.handleErrors(accountController.buildAccountManagement)
-);
+/* ************************************
+ *  Process Registration
+ *  Unit 4, process registration activity
+ *  ******************************** */
+router.post(
+  "/register",
+  regValidate.registationRules(),
+  regValidate.checkRegData,
+  utilities.handleErrors(accountController.registerAccount)
+)
 
-// Logout
-router.get("/logout", utilities.handleErrors(accountController.accountLogout))
+/* ************************************
+ *  Process Login
+ *  Unit 4, stickiness activity
+ *  Modified in Unit 5, Login Process activity
+ *  ******************************** */
+router.post(
+  "/login",
+  regValidate.loginRules(),
+  regValidate.checkLoginData,
+  utilities.handleErrors(accountController.accountLogin)
+)
 
-// Registration
-router.post("/register",
-    regValidate.registrationRules(),
-    regValidate.checkRegData,
-    utilities.handleErrors(accountController.registerAccount)
-);
+/* ************************************
+ *  Deliver Account Management View
+ *  Unit 5, JWT Authorization activity
+ *  ******************************** */
+router.get(
+  "/",
+  utilities.checkLogin,
+  utilities.handleErrors(accountController.buildManagement)
+)
 
-// Login
-router.post("/login",
-    regValidate.loginRules(),
-    regValidate.checkLoginData,
-    utilities.handleErrors(accountController.accountLogin)
-);
 
-// Update account view (protected)
-router.get("/update",
-    utilities.checkLogin,
-    utilities.handleErrors(accountController.buildUpdateAccount)
-);
+/* ****************************************
+ *5 /5
+ **************************************** */
+router.get(
+  "/update/:id",
+  utilities.checkLogin,
+  utilities.handleErrors(accountController.buildUpdate)
+)
 
-// Process account update
-router.post("/update",
-    regValidate.updateAccountRules(),
-    regValidate.checkUpdateData,
-    utilities.handleErrors(accountController.updateAccount)
-);
+/* ****************************************
+ *5 -5
+ **************************************** */
+router.post(
+  "/update",
+  utilities.checkLogin,
+  regValidate.updateRules(),
+  regValidate.checkEditData,
+  utilities.handleErrors(accountController.processUpdate)
+)
 
-// Change password
-router.post("/change",
-    regValidate.changePasswordRules(),
-    regValidate.checkChangePassword,
-    utilities.handleErrors(accountController.changePassword)
-);
+/* ****************************************
+5-5
+ **************************************** */
+router.post(
+  "/password",
+  utilities.checkLogin,
+  regValidate.passwordRule(),
+  regValidate.checkPassword,
+  utilities.handleErrors(accountController.processPassword)
+)
 
-module.exports = router;
+/* ****************************************
+5-6
+ **************************************** */
+router.get(
+  "/logout",
+  utilities.handleErrors(accountController.accountLogout)
+)
+
+module.exports = router
